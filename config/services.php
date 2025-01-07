@@ -34,5 +34,8 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'api_externa' => [
+        'base_url' => env('APP_OMEGA_BENEFICIARY_BONUS_URL', 'http://localhost/BonoApp/api'),
+    ],
 
 ];

@@ -2,29 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Http;
-
-use Illuminate\Http\Request;
+use App\Http\Requests\LoginRequest;
+use App\Services\HttpService;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    protected $loginUrl = '/login/authenticate';
+    protected $apiService;
+
+    public function __construct(HttpService $apiService)
     {
-        $url = env("APP_URL") . '/login/authenticate';
-
-        $request->validate([
-            'Username' => 'required|string',
-            'Password' => 'required|string',
-        ]);
-
-        // Enviar la solicitud POST a la API externa
-        $response = Http::post($url, [
-            'Username' => $request->Username,
-            'Password' => $request->Password,
-        ]);
-
-        return $response->json();
+        $this->apiService = $apiService;
     }
 
-    
+    public function login(LoginRequest $request)
+    {
+        $contentType = $request->header('Content-Type');
+        $accept = $request->header('Accept');
+
+        $headers = [
+            'Content-Type' => $contentType,
+            'Accept' => $accept,
+        ];
+
+        return $this->apiService->post($this->loginUrl, $request->validated(), $headers);
+    }
 }
