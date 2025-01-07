@@ -9,6 +9,20 @@ export default {
     ],
     theme: {
         extend: {
+            colors: {
+                softBlack: '#000000DE',
+                translucentBlack: '#00000099',
+                mutedBlack: '#00000061',
+                transparentBlack: '#0000001F',
+                orangeBright: '#FF6D00',
+                orangeLight: '#FF9A33',
+                orangeIntense: '#FF4400',
+                orangeSoft: '#FFB84D',
+                orangeRed: '#FF4500',
+                orangeDark: '#FF3D00',
+                orangeBrown: '#B24D00',
+                orangePale: '#FFD580',
+            },
             fontFamily: {
                 'poppins-black': ['Poppins-Black', 'sans-serif'],
                 'poppins-extrabold': ['Poppins-ExtraBold', 'sans-serif'],
@@ -30,8 +44,11 @@ export default {
                 'poppins-semibolditalic': ['Poppins-SemiBoldItalic', 'sans-serif'],
             },
             screens: {
+                'ss': '350px',
+                // => @media (min-width: 350px) { ... }
+
                 'sm': '412px',
-                // => @media (min-width: 640px) { ... }
+                // => @media (min-width: 412px) { ... }
 
                 'md': '768px',
                 // => @media (min-width: 768px) { ... }
@@ -40,10 +57,10 @@ export default {
                 // => @media (min-width: 1024px) { ... }
 
                 'xl': '1440px',
-                // => @media (min-width: 1280px) { ... }
+                // => @media (min-width: 1440px) { ... }
 
                 '2xl': '1920px',
-                // => @media (min-width: 1536px) { ... }
+                // => @media (min-width: 1920px) { ... }
             }
         },
     },

@@ -3,7 +3,6 @@ import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
 import vue from "@vitejs/plugin-vue";
 import { viteStaticCopy } from "vite-plugin-static-copy";
-import svgLoader from "vite-svg-loader";
 
 export default defineConfig({
     plugins: [
@@ -12,7 +11,6 @@ export default defineConfig({
             refresh: true,
         }),
         vue(),
-        svgLoader(), // Habilita la carga de SVG como componentes
         viteStaticCopy({
             targets: [
                 {
@@ -33,6 +31,7 @@ export default defineConfig({
             "@fonts": path.resolve(__dirname, "resources/assets/fonts"),
             "@icons": path.resolve(__dirname, "resources/assets/svg"),
             "@images": path.resolve(__dirname, "resources/assets/images"),
+            "@Components": path.resolve(__dirname, "resources/js/Components"),
         },
     },
 });
