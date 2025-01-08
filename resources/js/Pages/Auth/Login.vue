@@ -1,33 +1,3 @@
-<template>
-    <div class="flex justify-center items-center bg-gray-100 min-h-screen px-4 md:px-40 xl:px-96">
-        <div class="card-container px-4 py-6 md:px-10 bg-white rounded overflow-hidden shadow-lg">
-            <img src="@images/basic_logo.webp" class="mb-4" alt="logo_omega" />
-            <div class="mt-4 mb-6 text-center">
-                <p class="font-poppins-regular text-translucentBlack text-sm">
-                    Bienvenido al sistema de Omega Beneficiario. Para ingresar
-                    debes contar con una tarjeta afiliada a nuestra empresa
-                </p>
-            </div>
-
-            <h2 class="mb-6 text-xl font-poppins-medium text-center text-softBlack">
-                Iniciar sesión
-            </h2>
-            <form @submit.prevent="login" class="flex flex-col justify-between h-full">
-                <InputField label="Usuario" id="username" type="text" placeholder="Ingrese su usuario"
-                    v-model="username" />
-
-                <InputField class="mt-4 mb-6" label="Contraseña" id="password" type="password"
-                    placeholder="Ingrese su contraseña" v-model="password" />
-
-                <!-- Botón Primario con icono -->
-                <CustomButton variant="primary" type="submit">
-                    Ingresar
-                </CustomButton>
-            </form>
-        </div>
-    </div>
-</template>
-
 <script>
 import http from "../../core/http/api.js";
 import router from "../../core/router.js";
@@ -84,3 +54,35 @@ export default {
     }
 }
 </style>
+
+<template>
+    <div class="flex justify-center items-center bg-gray-100 min-h-screen px-4 md:px-40 xl:px-96">
+        <div class="card-container px-4 py-6 md:px-10 bg-white rounded overflow-hidden shadow-lg">
+            <img src="@images/basic_logo.webp" class="px-3 py-3 mb-4" alt="logo_omega" />
+            <div class="mt-4 mb-6 text-center">
+                <p class="font-poppins-regular text-translucentBlack text-sm">
+                    Bienvenido al sistema de Omega Beneficiario. Para ingresar
+                    debes contar con una tarjeta afiliada a nuestra empresa
+                </p>
+            </div>
+
+            <h2 class="mb-6 text-xl font-poppins-medium text-center text-softBlack">
+                Iniciar sesión
+            </h2>
+            <form @submit.prevent="login" class="flex flex-col justify-between h-full">
+                <InputField label="Usuario" id="username" type="text" placeholder="Ingrese su usuario"
+                    v-model="username" />
+
+                <div class="mt-4 mb-6">
+                    <InputField label="Contraseña" id="password" type="password" placeholder="Ingrese su contraseña"
+                        v-model="password" />
+                </div>
+
+                <!-- Botón Primario con icono -->
+                <CustomButton variant="primary" type="submit">
+                    Ingresar
+                </CustomButton>
+            </form>
+        </div>
+    </div>
+</template>

@@ -38,7 +38,7 @@ export default {
 
 
 <template>
-    <button :class="[
+    <button v-bind="$attrs"  :class="[
         'w-full py-3 px-4 font-poppins-medium rounded-lg  focus:outline-none focus:ring-2 focus:ring-offset-2',
         buttonStyles
     ]" :type="type">

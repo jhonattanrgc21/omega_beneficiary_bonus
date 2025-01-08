@@ -5,7 +5,7 @@
 
         <!-- Contenedor para el input y el icono -->
         <div class="relative">
-            <input :id="id" :type="inputType" :placeholder="placeholder" v-model="inputValue"
+            <input :id="id" :type="inputType"  v-bind="$attrs" @input="$emit('update:modelValue', $event.target.value)"
                 class="w-full px-4 py-3 pr-10 border border-transparentBlack rounded-md focus:outline-none focus:ring-2 focus:ring-orangeLight" />
 
             <!-- Ícono de ojo para mostrar/ocultar contraseña -->
@@ -34,10 +34,6 @@ export default {
             type: String,
             default: "text",
         },
-        placeholder: {
-            type: String,
-            default: "",
-        },
         value: {
             type: [String, Number],
             default: "",
@@ -52,11 +48,6 @@ export default {
     computed: {
         inputType() {
             return this.isPasswordVisible ? "text" : this.type;
-        },
-    },
-    watch: {
-        inputValue(newValue) {
-            this.$emit("update:value", newValue);
         },
     },
     methods: {
