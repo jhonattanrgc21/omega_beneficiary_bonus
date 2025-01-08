@@ -1,59 +1,70 @@
 <template>
     <div class="relative">
-        <!-- Renderiza el label solo si existe -->
-        <label v-if="label" :for="id" class="block text-sm font-medium text-translucentBlack mb-2">{{ label }}</label>
+      <!-- Renderiza el label solo si existe -->
+      <label v-if="label" :for="id" class="block text-sm font-medium text-translucentBlack mb-2">{{ label }}</label>
 
-        <!-- Contenedor para el input y el icono -->
-        <div class="relative">
-            <input :id="id" :type="inputType"  v-bind="$attrs" @input="$emit('update:modelValue', $event.target.value)"
-                class="w-full px-4 py-3 pr-10 border border-transparentBlack rounded-md focus:outline-none focus:ring-2 focus:ring-orangeLight" />
+      <!-- Contenedor para el input y el icono -->
+      <div class="relative">
+        <input
+          v-bind="$attrs"
+          v-model="value"
+          :type="computedType"
+          :id="id"
+          :name="id"
+          class="w-full text-sm text-softBlack font-poppins-regular px-4 py-3 pr-10 border border-transparentBlack rounded-md focus:outline-none focus:ring-2 focus:ring-orangeLight"
+        />
 
-            <!-- Ícono de ojo para mostrar/ocultar contraseña -->
-            <button v-if="type === 'password'" @click="togglePasswordVisibility" type="button"
-                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600">
-                <img v-if="isPasswordVisible" src="@icons/icono_visibilidad_24x24.svg" alt="icono_visibilidad">
-                <img v-else src="@icons/visibility_off.svg" alt="icono_visibility_off">
-            </button>
-        </div>
+        <!-- Ícono de ojo para mostrar/ocultar contraseña -->
+        <button
+          v-if="type === 'password'"
+          @click="togglePasswordVisibility"
+          type="button"
+          class="absolute inset-y-0 right-0 pr-3 flex items-center "
+        >
+          <img v-if="isPasswordVisible" src="@icons/icono_visibilidad_24x24.svg" alt="icono_visibilidad">
+          <img v-else src="@icons/visibility_off.svg" alt="icono_visibility_off">
+        </button>
+      </div>
+
+      <!-- Mensaje de error -->
+      <p v-if="error" class="text-xs font-poppins-regular text-[#F16D85] mt-2 pl-4">{{ error }}</p>
     </div>
-</template>
+  </template>
 
-<script>
-export default {
-    name: "InputField",
-    props: {
-        label: {
-            type: String,
-            required: false,
-        },
-        id: {
-            type: String,
-            required: true,
-        },
-        type: {
-            type: String,
-            default: "text",
-        },
-        value: {
-            type: [String, Number],
-            default: "",
-        },
+  <script setup>
+  import { ref, defineProps, computed } from 'vue';
+
+  // Se utiliza para hacer un match con el v-model
+  const value = ref("");
+
+  const isPasswordVisible = ref(false);
+
+  // Parámetros del componente
+  const props = defineProps({
+    label: {
+      type: String,
+      default: null,
     },
-    data() {
-        return {
-            inputValue: this.value,
-            isPasswordVisible: false,
-        };
+    id: {
+      type: String,
+      required: true,
     },
-    computed: {
-        inputType() {
-            return this.isPasswordVisible ? "text" : this.type;
-        },
+    type: {
+      type: String,
+      default: "text",
     },
-    methods: {
-        togglePasswordVisibility() {
-            this.isPasswordVisible = !this.isPasswordVisible;
-        },
+    error: {
+      type: String,
+      default: null, // Mensaje de error opcional
     },
-};
-</script>
+  });
+
+  // Operaciones para modificar el tipo de input y el icono del ojo
+  const computedType = computed(() => {
+    return props.type === "password" && isPasswordVisible.value ? "text" : props.type;
+  });
+
+  const togglePasswordVisibility = () => {
+    isPasswordVisible.value = !isPasswordVisible.value;
+  };
+  </script>
