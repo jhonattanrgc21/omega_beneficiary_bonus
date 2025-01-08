@@ -60,25 +60,68 @@ const setTouched = (field) => {
 };
 
 // Funciones de validación para cada campo
+// Validación para el campo `username`
 const validateUsername = () => {
-    if (touched.username && !form.username) {
-        errors.username = 'El campo es obligatorio.';
-    } else if (form.username && form.username.length < 3) {
-        errors.username = 'El campo debe tener al menos 3 caracteres.';
-    } else {
-        errors.username = null;
+    const trimmedUsername = form.username.trim();
+    const errorsMessages = {
+        empty: 'El campo es obligatorio.',
+        tooShort: 'El campo debe tener al menos 3 caracteres.',
+        format: 'Error, solo se permiten letras, números, guiones bajos y puntos.',
+        startsWithNumber: 'El valor no puede iniciar con un número.',
+    };
+
+    if (!touched.username) {
+        errors.username = null; // No hay error si no se ha tocado el campo
+        return;
+    }
+
+    switch (true) {
+        case (trimmedUsername.length === 0):
+            errors.username = errorsMessages.empty; // Error si está vacío (espacios en blanco)
+            break;
+        case (!/^[a-zA-Z0-9_.]+$/.test(trimmedUsername)): // Verifica si contiene solo letras, números, guiones bajos y puntos
+            errors.username = errorsMessages.format;
+            break;
+        case (/^\d/.test(trimmedUsername)):  // Verifica si empieza con un número
+            errors.username = errorsMessages.startsWithNumber;
+            break;
+        case (trimmedUsername.length < 3):
+            errors.username = errorsMessages.tooShort; // Error si la longitud es menor a 3
+            break;
+        default:
+            errors.username = null; // No hay error si pasa todas las validaciones
+            break;
     }
 };
 
+
+
+// Validación para el campo `password`
 const validatePassword = () => {
-    if (touched.password && !form.password) {
-        errors.password = 'La contraseña es obligatoria.';
-    } else if (form.password && form.password.length < 8) {
-        errors.password = 'La contraseña debe tener al menos 8 caracteres.';
-    } else {
-        errors.password = null;
+    const trimmedPassword = form.password.trim();
+    const errorsMessages = {
+        empty: 'La contraseña es obligatoria.',
+        tooShort: 'La contraseña debe tener al menos 8 caracteres.',
+    };
+
+    if (!touched.password) {
+        errors.password = null; // No hay error si no se ha tocado el campo
+        return;
+    }
+
+    switch (true) {
+        case (trimmedPassword.length === 0):
+            errors.password = errorsMessages.empty; // Error si está vacío (espacios en blanco)
+            break;
+        case (trimmedPassword.length < 8):
+            errors.password = errorsMessages.tooShort; // Error si la longitud es menor a 8
+            break;
+        default:
+            errors.password = null; // No hay error si pasa todas las validaciones
+            break;
     }
 };
+
 
 // Computada para saber si hay errores en el formulario
 const hasErrors = computed(() => {
