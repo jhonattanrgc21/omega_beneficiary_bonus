@@ -9,8 +9,9 @@ export const authService = {
         });
 
         if (response.data.code !== 200) {
-            throw new Error("Credenciales incorrectas");
+            throw new Error(response.data.message || "Credenciales incorrectas");
         }
+
 
         const token = response.data.token;
         const userInfo = response.data.data[0];
@@ -21,8 +22,7 @@ export const authService = {
     },
 
     logout: () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        localStorage.removeItem('auth');
         useSessionStore.clearAuth();
     }
 };

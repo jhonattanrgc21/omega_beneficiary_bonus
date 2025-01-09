@@ -1,10 +1,13 @@
 import axios from "axios";
 import router from "@routes/index.js";
+import { authService } from "../../modules/auth/services/authService";
+import { useSessionStore } from "@stores/useSessionStore";
+import { useLoadingStore } from '@stores/useLoadingStore.js';
+
 
 const apiClient = axios.create({
-    baseURL: '/api',
-    //baseURL: import.meta.env.VITE_API_URL, // Usa la URL de tu API desde las variables de entorno.
-    timeout: 10000, // Tiempo límite para solicitudes (10 segundos).
+    baseURL: "/api",
+    timeout: 10000,
     headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -14,9 +17,11 @@ const apiClient = axios.create({
 // Interceptor para incluir el token de autorización en las solicitudes
 apiClient.interceptors.request.use(
     (config) => {
+        useLoadingStore().startLoading();
         if (!config.skipAuth) {
             // Si skipAuth no está definido o es false
-            const token = localStorage.getItem("token");
+            const session = useSessionStore();
+            const token = session.token;
             if (token) {
                 config.headers.Authorization = `Bearer ${token}`;
             }
@@ -24,39 +29,52 @@ apiClient.interceptors.request.use(
         return config;
     },
     (error) => {
+        useLoadingStore().stopLoading();
         return Promise.reject(error);
     }
 );
 
 // Interceptor para manejar respuestas y errores globalmente
 apiClient.interceptors.response.use(
-    (response) => response,
+    (response) => {
+        useLoadingStore().stopLoading();
+        return response;
+    },
     (error) => {
+        useLoadingStore().stopLoading();
         if (error.response) {
-            const { status } = error.response;
+            const { status, data } = error.response;
+
+            // Mensajes globales opcionales según el código de estado
             switch (status) {
                 case 401:
-                    alert(
-                        "Sesión expirada. Por favor, inicia sesión nuevamente."
-                    );
-                    localStorage.removeItem("token");
+                    authService.logout();
                     router.push("/");
                     break;
                 case 403:
-                    alert("No tienes permisos para realizar esta acción.");
+                    console.error(
+                        "No tienes permisos para realizar esta acción."
+                    );
                     break;
                 case 500:
-                    alert("Error en el servidor. Inténtalo más tarde.");
+                    console.error("Error en el servidor. Inténtalo más tarde.");
                     break;
             }
-        } else if (error.request) {
-            alert(
-                "No se pudo conectar con el servidor. Verifica tu conexión a Internet."
-            );
-        } else {
-            alert("Ocurrió un error inesperado.");
+
+            // Retornar el mensaje de error del servidor
+            return Promise.reject(data);
         }
-        return Promise.reject(error);
+
+        if (error.request) {
+            return Promise.reject({
+                message:
+                    "No se pudo conectar con el servidor. Verifica tu conexión a Internet.",
+            });
+        } else {
+            return Promise.reject({
+                message: "Ocurrió un error inesperado.",
+            });
+        }
     }
 );
 

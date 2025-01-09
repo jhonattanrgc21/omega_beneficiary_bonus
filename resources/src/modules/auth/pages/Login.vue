@@ -1,5 +1,5 @@
 <template>
-    <div class="card-container px-4 py-6 md:px-10 bg-white rounded overflow-hidden shadow-lg">
+    <div class="card-container px-4 py-6 md:px-10 bg-white rounded-lg  overflow-hidden shadow-lg">
         <img src="@images/basic_logo.webp" class="px-3 py-3 mb-4" alt="logo_omega" />
         <div class="mt-4 mb-6 text-center">
             <p class="font-poppins-regular text-translucentBlack text-sm">
@@ -11,6 +11,7 @@
         <h2 class="mb-6 text-xl font-poppins-medium text-center text-softBlack">
             Iniciar sesión
         </h2>
+
         <form class="flex flex-col justify-between h-full">
             <InputField @focus="setTouched('username')" @input="validateUsername" @blur="validateUsername"
                 label="Usuario" id="username" type="text" placeholder="Ingrese su usuario" v-model="form.username"
@@ -34,9 +35,14 @@
             <CustomButton :disabled="hasErrors" @click.prevent="login" variant="primary" type="button">
                 Ingresar
             </CustomButton>
+
+            <!-- Mostrar mensaje de error del servidor -->
+            <div v-if="serverError.message" class="text-xs font-poppins-regular text-[#F16D85] mt-6 text-center">
+                {{ serverError.message }}
+            </div>
         </form>
 
-        <!-- Enlace para recuperación de contraseña -->
+        <!-- Enlace para registro -->
         <div class="mt-6 text-center">
             <router-link to="/auth/register" class="text-sm text-[#007FFF] font-poppins-medium hover:text-[#0066CC]">
                 No tengo cuenta, deseo registrarme
@@ -67,13 +73,16 @@ const errors = reactive({
     password: null
 });
 
+const serverError = reactive({
+    message: null
+});
+
 // Función para marcar el campo como tocado
 const setTouched = (field) => {
     touched[field] = true;
 };
 
 // Funciones de validación para cada campo
-// Validación para el campo `username`
 const validateUsername = () => {
     const trimmedUsername = form.username.trim();
     const errorsMessages = {
@@ -84,32 +93,29 @@ const validateUsername = () => {
     };
 
     if (!touched.username) {
-        errors.username = null; // No hay error si no se ha tocado el campo
+        errors.username = null;
         return;
     }
 
     switch (true) {
         case (trimmedUsername.length === 0):
-            errors.username = errorsMessages.empty; // Error si está vacío (espacios en blanco)
+            errors.username = errorsMessages.empty;
             break;
-        case (!/^[a-zA-Z0-9_.]+$/.test(trimmedUsername)): // Verifica si contiene solo letras, números, guiones bajos y puntos
+        case (!/^[a-zA-Z0-9_.]+$/.test(trimmedUsername)):
             errors.username = errorsMessages.format;
             break;
-        case (/^\d/.test(trimmedUsername)):  // Verifica si empieza con un número
+        case (/^\d/.test(trimmedUsername)):
             errors.username = errorsMessages.startsWithNumber;
             break;
         case (trimmedUsername.length < 3):
-            errors.username = errorsMessages.tooShort; // Error si la longitud es menor a 3
+            errors.username = errorsMessages.tooShort;
             break;
         default:
-            errors.username = null; // No hay error si pasa todas las validaciones
+            errors.username = null;
             break;
     }
 };
 
-
-
-// Validación para el campo `password`
 const validatePassword = () => {
     const trimmedPassword = form.password.trim();
     const errorsMessages = {
@@ -118,33 +124,30 @@ const validatePassword = () => {
     };
 
     if (!touched.password) {
-        errors.password = null; // No hay error si no se ha tocado el campo
+        errors.password = null;
         return;
     }
 
     switch (true) {
         case (trimmedPassword.length === 0):
-            errors.password = errorsMessages.empty; // Error si está vacío (espacios en blanco)
+            errors.password = errorsMessages.empty;
             break;
         case (trimmedPassword.length < 8):
-            errors.password = errorsMessages.tooShort; // Error si la longitud es menor a 8
+            errors.password = errorsMessages.tooShort;
             break;
         default:
-            errors.password = null; // No hay error si pasa todas las validaciones
+            errors.password = null;
             break;
     }
 };
 
-
 // Computada para saber si hay errores en el formulario
 const hasErrors = computed(() => {
-    // Verifica si hay errores y si los campos son vacíos
     return Object.values(errors).some(error => error !== null) || !form.username || !form.password;
 });
 
 // Enviar formulario
 const login = async () => {
-    // Validación final antes de enviar
     validateUsername();
     validatePassword();
 
@@ -153,15 +156,14 @@ const login = async () => {
     }
 
     try {
-        // Usamos el servicio authService para hacer login
         await authService.login(form.username, form.password);
-
-        // Redirigir al dashboard
         router.push("/profile/account");
-
     } catch (error) {
-        console.error(error);
-        alert(error.message); // Mostrar el mensaje de error si hay un problema
+        if (error.response && error.response.data && error.response.data.message) {
+            serverError.message = error.response.data.message;
+        } else {
+            serverError.message = error;
+        }
     }
 };
 </script>
