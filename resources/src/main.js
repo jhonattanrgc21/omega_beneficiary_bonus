@@ -1,7 +1,7 @@
-import './bootstrap';
 import { createApp } from 'vue';
-import App from './Pages/App.vue';
-import router from './core/router';
+import './bootstrap';
+import router from '@router/index.js';
+import App from './App.vue';
 
 const app = createApp(App);
 app.use(router);

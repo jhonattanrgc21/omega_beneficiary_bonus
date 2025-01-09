@@ -47,10 +47,10 @@
 
 <script setup>
 import { reactive, computed } from "vue";
-import http from "../../core/http/api.js";
-import router from "../../core/router.js";
-import InputField from "@Components/InputField.vue";
-import CustomButton from "@Components/CustomButton.vue";
+import router from "@router/index.js";
+import InputField from "@components/InputField.vue";
+import CustomButton from "@components/CustomButton.vue";
+import { authService } from "../services/authService.js";
 
 const form = reactive({
     username: '',
@@ -153,24 +153,15 @@ const login = async () => {
     }
 
     try {
-        const response = await http.post("/auth/login", {
-            Username: form.username,
-            Password: form.password,
-        });
+        // Usamos el servicio authService para hacer login
+        await authService.login(form.username, form.password);
 
-        const data = response.data;
-        if (data.code !== 200) {
-            alert("Credenciales incorrectas");
-            return;
-        }
+        // Redirigir al dashboard
+        router.push("/profile/account");
 
-        const token = data.token;
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(data.data[0]));
-        router.push("/dashboard");
     } catch (error) {
         console.error(error);
-        alert("Error al iniciar sesión");
+        alert(error.message); // Mostrar el mensaje de error si hay un problema
     }
 };
 </script>

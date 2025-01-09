@@ -7,7 +7,7 @@ import { viteStaticCopy } from "vite-plugin-static-copy";
 export default defineConfig({
     plugins: [
         laravel({
-            input: ["resources/sass/app.scss", "resources/js/app.js"],
+            input: ["resources/src/assets/sass/main.scss", "resources/src/main.js"],
             refresh: true,
         }),
         vue(),
@@ -28,10 +28,12 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            "@fonts": path.resolve(__dirname, "resources/assets/fonts"),
-            "@icons": path.resolve(__dirname, "resources/assets/svg"),
-            "@images": path.resolve(__dirname, "resources/assets/images"),
-            "@Components": path.resolve(__dirname, "resources/js/Components"),
+            "@fonts": path.resolve(__dirname, "resources/src/assets/fonts"),
+            "@icons": path.resolve(__dirname, "resources/src/assets/svg"),
+            "@images": path.resolve(__dirname, "resources/src/assets/images"),
+            "@components": path.resolve(__dirname, "resources/src/components/common"),
+            "@http": path.resolve(__dirname, "resources/src/core/http"),
+            "@router": path.resolve(__dirname, "resources/src/router"),
         },
     },
     server: {
