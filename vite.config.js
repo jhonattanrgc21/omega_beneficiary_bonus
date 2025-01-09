@@ -33,7 +33,8 @@ export default defineConfig({
             "@images": path.resolve(__dirname, "resources/src/assets/images"),
             "@components": path.resolve(__dirname, "resources/src/components/common"),
             "@http": path.resolve(__dirname, "resources/src/core/http"),
-            "@router": path.resolve(__dirname, "resources/src/router"),
+            "@stores": path.resolve(__dirname, "resources/src/core/stores"),
+            "@routes": path.resolve(__dirname, "resources/src/routes"),
         },
     },
     server: {

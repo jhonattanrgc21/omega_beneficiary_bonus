@@ -1,4 +1,5 @@
 import http from "@http/api.js";
+import { useSessionStore } from "@stores/useSessionStore";
 
 export const authService = {
     login: async (username, password) => {
@@ -12,10 +13,16 @@ export const authService = {
         }
 
         const token = response.data.token;
-        const user = response.data.data[0];
+        const userInfo = response.data.data[0];
 
-        // Guardar en localStorage
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
+        const session = useSessionStore();
+        session.setToken(token);
+        session.setUserInfo(userInfo);
     },
+
+    logout: () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        useSessionStore.clearAuth();
+    }
 };

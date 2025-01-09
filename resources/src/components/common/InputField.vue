@@ -32,7 +32,7 @@
   </template>
 
   <script setup>
-  import { ref, defineProps, computed } from 'vue';
+  import { ref, computed } from 'vue';
 
   // Se utiliza para hacer un match con el v-model
   const value = ref("");

@@ -21,12 +21,14 @@ export default [
             {
                 path: "directory",
                 name: "Directory",
+                meta: { requiresSpecialAccess: true },
                 component: () =>
                     import("../modules/profile/directory/pages/Directory.vue"),
             },
             {
                 path: "mobile-payment",
                 name: "MobilePayment",
+                meta: { requiresSpecialAccess: true },
                 component: () =>
                     import(
                         "../modules/profile/mobile-payment/pages/MobilePayment.vue"

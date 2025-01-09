@@ -31,7 +31,7 @@
             </div>
 
             <!-- Botón Primario con icono -->
-            <CustomButton :disabled="hasErrors" @click.prevent="login" variant="primary" type="submit">
+            <CustomButton :disabled="hasErrors" @click.prevent="login" variant="primary" type="button">
                 Ingresar
             </CustomButton>
         </form>
@@ -47,7 +47,7 @@
 
 <script setup>
 import { reactive, computed } from "vue";
-import router from "@router/index.js";
+import router from "@routes/index.js";
 import InputField from "@components/InputField.vue";
 import CustomButton from "@components/CustomButton.vue";
 import { authService } from "../services/authService.js";
