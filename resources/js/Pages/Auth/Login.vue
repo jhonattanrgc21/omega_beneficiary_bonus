@@ -1,33 +1,46 @@
 <template>
-    <div class="flex justify-center items-center bg-gray-100 min-h-screen px-4 md:px-40 xl:px-96">
-        <div class="card-container px-4 py-6 md:px-10 bg-white rounded overflow-hidden shadow-lg">
-            <img src="@images/basic_logo.webp" class="px-3 py-3 mb-4" alt="logo_omega" />
-            <div class="mt-4 mb-6 text-center">
-                <p class="font-poppins-regular text-translucentBlack text-sm">
-                    Bienvenido al sistema de Omega Beneficiario. Para ingresar
-                    debes contar con una tarjeta afiliada a nuestra empresa
-                </p>
+    <div class="card-container px-4 py-6 md:px-10 bg-white rounded overflow-hidden shadow-lg">
+        <img src="@images/basic_logo.webp" class="px-3 py-3 mb-4" alt="logo_omega" />
+        <div class="mt-4 mb-6 text-center">
+            <p class="font-poppins-regular text-translucentBlack text-sm">
+                Bienvenido al sistema de Omega Beneficiario. Para ingresar
+                debes contar con una tarjeta afiliada a nuestra empresa
+            </p>
+        </div>
+
+        <h2 class="mb-6 text-xl font-poppins-medium text-center text-softBlack">
+            Iniciar sesión
+        </h2>
+        <form class="flex flex-col justify-between h-full">
+            <InputField @focus="setTouched('username')" @input="validateUsername" @blur="validateUsername"
+                label="Usuario" id="username" type="text" placeholder="Ingrese su usuario" v-model="form.username"
+                :error="errors.username" />
+
+            <div class="mt-4 mb-4">
+                <InputField @focus="setTouched('password')" @input="validatePassword" @blur="validatePassword"
+                    label="Contraseña" id="password" type="password" placeholder="Ingrese su contraseña"
+                    v-model="form.password" :error="errors.password" />
             </div>
 
-            <h2 class="mb-6 text-xl font-poppins-medium text-center text-softBlack">
-                Iniciar sesión
-            </h2>
-            <form class="flex flex-col justify-between h-full">
-                <InputField @focus="setTouched('username')" @input="validateUsername" @blur="validateUsername"
-                    label="Usuario" id="username" type="text" placeholder="Ingrese su usuario" v-model="form.username"
-                    :error="errors.username" />
+            <!-- Enlace para recuperación de contraseña -->
+            <div class="mb-8 text-right">
+                <router-link to="/auth/forgot-password"
+                    class="text-sm text-[#007FFF] font-poppins-medium hover:text-[#0066CC]">
+                    ¿Olvidaste tu contraseña?
+                </router-link>
+            </div>
 
-                <div class="mt-4 mb-6">
-                    <InputField @focus="setTouched('password')" @input="validatePassword" @blur="validatePassword"
-                        label="Contraseña" id="password" type="password" placeholder="Ingrese su contraseña"
-                        v-model="form.password" :error="errors.password" />
-                </div>
+            <!-- Botón Primario con icono -->
+            <CustomButton :disabled="hasErrors" @click.prevent="login" variant="primary" type="submit">
+                Ingresar
+            </CustomButton>
+        </form>
 
-                <!-- Botón Primario con icono -->
-                <CustomButton :disabled="hasErrors" @click.prevent="login" variant="primary" type="submit">
-                    Ingresar
-                </CustomButton>
-            </form>
+        <!-- Enlace para recuperación de contraseña -->
+        <div class="mt-6 text-center">
+            <router-link to="/auth/register" class="text-sm text-[#007FFF] font-poppins-medium hover:text-[#0066CC]">
+                No tengo cuenta, deseo registrarme
+            </router-link>
         </div>
     </div>
 </template>

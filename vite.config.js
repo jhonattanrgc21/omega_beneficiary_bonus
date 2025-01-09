@@ -34,4 +34,11 @@ export default defineConfig({
             "@Components": path.resolve(__dirname, "resources/js/Components"),
         },
     },
+    server: {
+        host: "0.0.0.0",
+        port: 3000,
+        hmr: {
+            host: "localhost",
+        },
+    },
 });
