@@ -43,7 +43,7 @@
         </form>
 
         <!-- Enlace para registro -->
-        <div class="mt-6 text-center">
+        <div class="w-full mt-6 text-center">
             <router-link to="/auth/register" class="text-sm text-[#007FFF] font-poppins-medium hover:text-[#0066CC]">
                 No tengo cuenta, deseo registrarme
             </router-link>
