@@ -7,8 +7,8 @@
                 placeholder="Ingrese su cédula" v-model="form.identification" :error="errors.identification" />
 
             <div class="mt-4 mb-4">
-                <InputField @focus="setTouched('date')" @input="validateDate" @blur="validateDate"
-                    label="Fecha de nacimiento" id="date" type="text" placeholder="Seleccione su fecha de nacimiento"
+                <CustomDatePicker @focus="setTouched('date')" @input="validateDate" @blur="validateDate"
+                    label="Fecha de nacimiento" id="date" placeholder="Seleccione su fecha de nacimiento"
                     v-model="form.date" :error="errors.date" />
             </div>
 
@@ -25,6 +25,7 @@
 <script setup>
 import { computed, watch } from "vue";
 import InputField from "@components/InputField.vue";
+import CustomDatePicker from "@components/CustomDatePicker.vue";
 import { useForm } from "@utils/formHelper";
 import { validateUsername as validateUser } from "@utils/validators";
 import { useForgotPasswordStore } from '../../stores/useForgotPasswordStore';
