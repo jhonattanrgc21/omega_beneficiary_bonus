@@ -34,6 +34,8 @@ export default defineConfig({
             "@components": path.resolve(__dirname, "resources/src/components/common"),
             "@http": path.resolve(__dirname, "resources/src/core/http"),
             "@stores": path.resolve(__dirname, "resources/src/core/stores"),
+            "@constants": path.resolve(__dirname, "resources/src/core/constants"),
+            "@utils": path.resolve(__dirname, "resources/src/core/utils"),
             "@routes": path.resolve(__dirname, "resources/src/routes"),
         },
     },

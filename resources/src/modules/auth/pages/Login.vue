@@ -56,89 +56,38 @@ import { reactive, computed } from "vue";
 import router from "@routes/index.js";
 import InputField from "@components/InputField.vue";
 import CustomButton from "@components/CustomButton.vue";
+import { useForm } from "@utils/formHelper";
+import { validateUsername as validateUser, validatePassword as validatePass } from "@utils/validators";
 import { authService } from "../services/authService.js";
 
-const form = reactive({
+
+const { form, touched, errors, setTouched } = useForm({
     username: '',
     password: ''
-});
-
-const touched = reactive({
-    username: false,
-    password: false
-});
-
-const errors = reactive({
-    username: null,
-    password: null
 });
 
 const serverError = reactive({
     message: null
 });
 
-// Función para marcar el campo como tocado
-const setTouched = (field) => {
-    touched[field] = true;
-};
-
-// Funciones de validación para cada campo
+// Validar solo formato y longitud mínima
 const validateUsername = () => {
-    const trimmedUsername = form.username.trim();
-    const errorsMessages = {
-        empty: 'El campo es obligatorio.',
-        tooShort: 'El campo debe tener al menos 3 caracteres.',
-        format: 'Error, solo se permiten letras, números, guiones bajos y puntos.',
-        startsWithNumber: 'El valor no puede iniciar con un número.',
-    };
-
     if (!touched.username) {
         errors.username = null;
         return;
     }
 
-    switch (true) {
-        case (trimmedUsername.length === 0):
-            errors.username = errorsMessages.empty;
-            break;
-        case (!/^[a-zA-Z0-9_.]+$/.test(trimmedUsername)):
-            errors.username = errorsMessages.format;
-            break;
-        case (/^\d/.test(trimmedUsername)):
-            errors.username = errorsMessages.startsWithNumber;
-            break;
-        case (trimmedUsername.length < 3):
-            errors.username = errorsMessages.tooShort;
-            break;
-        default:
-            errors.username = null;
-            break;
-    }
+    errors.username = validateUser(form.username);
 };
 
+// Validar contraseña solo para requisitos mínimos, sin obligar
 const validatePassword = () => {
-    const trimmedPassword = form.password.trim();
-    const errorsMessages = {
-        empty: 'La contraseña es obligatoria.',
-        tooShort: 'La contraseña debe tener al menos 8 caracteres.',
-    };
-
     if (!touched.password) {
         errors.password = null;
         return;
     }
 
-    switch (true) {
-        case (trimmedPassword.length === 0):
-            errors.password = errorsMessages.empty;
-            break;
-        case (trimmedPassword.length < 8):
-            errors.password = errorsMessages.tooShort;
-            break;
-        default:
-            errors.password = null;
-            break;
-    }
+    errors.password = validatePass(form.password);
 };
 
 // Computada para saber si hay errores en el formulario
