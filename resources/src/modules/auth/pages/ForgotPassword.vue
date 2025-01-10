@@ -29,32 +29,34 @@
             </div>
 
             <!-- Navigation Buttons y Link -->
-            <div class="mt-auto flex flex-col justify-between items-center space-y-4">
-                <div class="flex justify-between w-full">
-                    <CustomButton :disabled="currentStep === 0" @click="prevStep" variant="outline" type="button">
-                        Anterior
-                    </CustomButton>
 
-                    <CustomButton :disabled="!isStepValid(currentStep)" @click="nextStep" variant="primary"
-                        type="button">
-                        {{ currentStep === stepComponents.length - 1 ? 'Finalizar' : 'Siguiente' }}
-                    </CustomButton>
-                </div>
-                <div class="mt-4 text-center w-full">
-                    <router-link to="/auth/login"
-                        class="text-sm text-[#007FFF] font-poppins-medium hover:text-[#0066CC]">
-                        Volver al inicio de sesión
-                    </router-link>
-                </div>
+            <div
+                :class="currentStep === 0 ? 'flex justify-end w-full mt-auto' : 'flex justify-between w-full mt-auto'">
+                <!-- Botón Anterior -->
+                <CustomButton v-if="currentStep != 0" @click="prevStep" variant="outline" type="button">
+                    Anterior
+                </CustomButton>
+
+                <!-- Botón Siguiente -->
+                <CustomButton :disabled="!isStepValid(currentStep)" @click="nextStep" variant="primary" type="button">
+                    {{ currentStep === stepComponents.length - 1 ? 'Finalizar' : 'Continuar' }}
+                </CustomButton>
+            </div>
+
+            <div class="mt-4 text-center w-full">
+                <router-link to="/auth/login" class="text-sm text-[#007FFF] font-poppins-medium hover:text-[#0066CC]">
+                    Volver al inicio de sesión
+                </router-link>
             </div>
         </div>
+
     </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
 import CustomButton from "@components/CustomButton.vue";
-import { useForgotPasswordStore } from '../stores/useForgotPasswordStore';  // Asegúrate de que el path sea correcto
+import { useForgotPasswordStore } from '../stores/useForgotPasswordStore';
 import Step1 from "../views/forgotSteps/Step1.vue";
 import Step2 from "../views/forgotSteps/Step2.vue";
 import Step3a from "../views/forgotSteps/Step3a.vue";

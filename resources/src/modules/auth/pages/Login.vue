@@ -70,7 +70,6 @@ const serverError = reactive({
     message: null
 });
 
-// Validar solo formato y longitud mínima
 const validateUsername = () => {
     if (!touched.username) {
         errors.username = null;
@@ -80,7 +79,6 @@ const validateUsername = () => {
     errors.username = validateUser(form.username);
 };
 
-// Validar contraseña solo para requisitos mínimos, sin obligar
 const validatePassword = () => {
     if (!touched.password) {
         errors.password = null;

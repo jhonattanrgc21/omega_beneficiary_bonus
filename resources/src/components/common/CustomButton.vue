@@ -21,7 +21,7 @@ const props = defineProps({
 });
 
 const buttonStyles = computed(() => {
-  const baseStyles = 'py-3 px-4 font-poppins-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2';
+  const baseStyles = 'py-2 px-3 font-poppins-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2';
 
   if (props.disabled) {
     return `${baseStyles} bg-gray-400 text-white cursor-not-allowed opacity-50`; // Deshabilitado con texto blanco
@@ -44,7 +44,7 @@ const buttonStyles = computed(() => {
   <button
     v-bind="$attrs"
     :class="[
-      'py-3 px-4 font-poppins-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2',
+      'py-2 px-3 font-poppins-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2',
       buttonStyles
     ]"
     :type="props.type"
