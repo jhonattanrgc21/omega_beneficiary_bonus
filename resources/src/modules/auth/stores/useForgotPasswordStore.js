@@ -1,34 +1,35 @@
 import { defineStore } from "pinia";
+import { reactive } from "vue";
 
 export const useForgotPasswordStore = defineStore("forgotPassword", {
     state: () => ({
-        step1: {
+        step1: reactive({
             identification: "",
             date: "",
             cardNumber: "",
             response: null,
             isValid: false,
-        },
-        step2: {
+        }),
+        step2: reactive({
             method: 1,
             isValid: true,
-        },
-        step3a: {
+        }),
+        step3a: reactive({
             otpCode: "",
             isValid: false,
-        },
-        step3b: {
+        }),
+        step3b: reactive({
             phone: "",
             securityQuestionAnswer1: "",
             securityQuestionAnswer2: "",
             securityQuestionAnswer3: "",
             isValid: false,
-        },
-        step4: {
+        }),
+        step4: reactive({
             newPassword: "",
             confirmPassword: "",
             isValid: false,
-        },
+        }),
     }),
     actions: {
         // Setters para cada campo de cada paso

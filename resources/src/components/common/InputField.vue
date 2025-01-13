@@ -7,7 +7,8 @@
       <div class="relative">
         <input
           v-bind="$attrs"
-          v-model="value"
+          :value="modelValue"
+          @input="$emit('update:modelValue', $event.target.value)"
           :type="computedType"
           :id="id"
           :name="id"
@@ -34,11 +35,6 @@
   <script setup>
   import { ref, computed } from 'vue';
 
-  // Se utiliza para hacer un match con el v-model
-  const value = ref("");
-
-  const isPasswordVisible = ref(false);
-
   // Parámetros del componente
   const props = defineProps({
     label: {
@@ -57,7 +53,14 @@
       type: String,
       default: null, // Mensaje de error opcional
     },
+    modelValue: {
+      type: [String, Number],
+      default: "",
+    },
   });
+
+  // Controla si la contraseña es visible
+  const isPasswordVisible = ref(false);
 
   // Operaciones para modificar el tipo de input y el icono del ojo
   const computedType = computed(() => {

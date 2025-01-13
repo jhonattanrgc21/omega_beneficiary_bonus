@@ -34,9 +34,9 @@ import { useForgotPasswordStore } from '../../stores/useForgotPasswordStore';
 const forgotPasswordStore = useForgotPasswordStore();
 
 const { form, touched, errors, setTouched } = useForm({
-    identification: '',
-    date: '',
-    cardNumber: ''
+    identification: forgotPasswordStore.step1.identification,
+    date: forgotPasswordStore.step1.date,
+    cardNumber:  forgotPasswordStore.step1.cardNumber
 });
 
 const validateIdentification = () => {
@@ -44,6 +44,7 @@ const validateIdentification = () => {
         errors.identification = null;
         return;
     }
+    forgotPasswordStore.setStep1Identification(form.identification);
     errors.identification = validateIdent(form.identification);
 };
 
@@ -52,7 +53,7 @@ const validateDate = () => {
         errors.date = null;
         return;
     }
-
+    forgotPasswordStore.setStep1Date(form.date);
     errors.date = validateD(form.date);
 };
 
@@ -61,7 +62,7 @@ const validateCardNumber = () => {
         errors.cardNumber = null;
         return;
     }
-
+    forgotPasswordStore.setStep1CardNumber(form.cardNumber);
     errors.cardNumber = validateC(form.cardNumber);
 };
 
