@@ -27,7 +27,7 @@ import { computed, watch } from "vue";
 import InputField from "@components/InputField.vue";
 import CustomDatePicker from "@components/CustomDatePicker.vue";
 import { useForm } from "@utils/formHelper";
-import { validateUsername as validateUser } from "@utils/validators";
+import { validateIdentification as validateIdent, validateDate as validateD, validateCard as validateC } from "@utils/validators";
 import { useForgotPasswordStore } from '../../stores/useForgotPasswordStore';
 
 // Acceder al store de Pinia
@@ -44,8 +44,7 @@ const validateIdentification = () => {
         errors.identification = null;
         return;
     }
-
-    errors.identification = validateUser(form.identification);
+    errors.identification = validateIdent(form.identification);
 };
 
 const validateDate = () => {
@@ -54,7 +53,7 @@ const validateDate = () => {
         return;
     }
 
-    errors.date = validateUser(form.date);
+    errors.date = validateD(form.date);
 };
 
 const validateCardNumber = () => {
@@ -63,7 +62,7 @@ const validateCardNumber = () => {
         return;
     }
 
-    errors.cardNumber = validateUser(form.cardNumber);
+    errors.cardNumber = validateC(form.cardNumber);
 };
 
 
@@ -75,7 +74,6 @@ const hasErrors = computed(() => {
 
 // Actualizar el estado global cuando cambie la validez del formulario
 watch(hasErrors, (newVal) => {
-    console.log(newVal);
     forgotPasswordStore.setStep1IsValid(!newVal);
 });
 
