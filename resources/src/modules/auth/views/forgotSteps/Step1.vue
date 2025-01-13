@@ -36,7 +36,7 @@ const forgotPasswordStore = useForgotPasswordStore();
 const { form, touched, errors, setTouched } = useForm({
     identification: forgotPasswordStore.step1.identification,
     date: forgotPasswordStore.step1.date,
-    cardNumber:  forgotPasswordStore.step1.cardNumber
+    cardNumber: forgotPasswordStore.step1.cardNumber
 });
 
 const validateIdentification = () => {
