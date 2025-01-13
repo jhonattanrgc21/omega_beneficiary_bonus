@@ -30,8 +30,7 @@
 
             <!-- Navigation Buttons y Link -->
 
-            <div
-                :class="currentStep === 0 ? 'flex justify-end w-full mt-auto' : 'flex justify-between w-full mt-auto'">
+            <div :class="currentStep === 0 ? 'flex justify-end w-full mt-auto' : 'flex justify-between w-full mt-auto'">
                 <!-- Botón Anterior -->
                 <CustomButton v-if="currentStep != 0" @click="prevStep" variant="outline" type="button">
                     Anterior
@@ -107,6 +106,45 @@ const nextStep = () => {
         submitFinalData();
     }
 };
+
+// const nextStep = async () => {
+//     try {
+//         // Verifica el paso actual y realiza la petición correspondiente
+//         switch (currentStep.value) {
+//             case 0: // Paso 1
+//                 isValid = await forgotPasswordStore.validateStep1();
+//                 break;
+
+//             case 1: // Paso 2
+//                 isValid = await forgotPasswordStore.validateStep2();
+//                 break;
+
+//             case 2: // Paso 3a o 3b
+//                 const method = forgotPasswordStore.step2.method;
+//                 if (method === 1) {
+//                     isValid = await forgotPasswordStore.validateStep3a();
+//                 } else {
+//                     isValid = await forgotPasswordStore.validateStep3b();
+//                 }
+//                 break;
+
+//             case 3: // Paso 4
+//                 isValid = await forgotPasswordStore.validateStep4();
+//                 break;
+//         }
+
+//         // Si la validación es exitosa, avanza al siguiente paso
+//         if (currentStep.value < stepComponents.length - 1) {
+//             currentStep.value++;
+//         } else {
+//             // Realizar la solicitud final al backend
+//             submitFinalData();
+//         }
+//     } catch (error) {
+//         // TODO: Agregar un pop up para mostrar el mensaje de error
+//         console.error('Error al validar el paso:', error);
+//     }
+// };
 
 // Función para retroceder al paso anterior
 const prevStep = () => {
