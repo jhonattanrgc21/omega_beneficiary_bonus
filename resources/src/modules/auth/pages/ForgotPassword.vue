@@ -47,6 +47,14 @@
                     Volver al inicio de sesión
                 </router-link>
             </div>
+
+            <WarningPopup :title="popupTitle" :message="popupMessage" :buttonText="'Aceptar'" :isVisible="showPopup"
+                :iconSrc="'error.svg'" @close="showPopup = false">
+                <template #icon>
+                    <img src="@icons/error.svg" alt="icon" class="h-12 w-12 mb-4">
+                </template>
+            </WarningPopup>
+
         </div>
 
     </div>
@@ -55,6 +63,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import CustomButton from "@components/CustomButton.vue";
+import WarningPopup from "@components/WarningPopup.vue";
 import { useForgotPasswordStore } from '../stores/useForgotPasswordStore';
 import { forgotPasswordService } from '../services/forgotPasswordService.js';
 import Step1 from "../views/forgotSteps/Step1.vue";
@@ -66,9 +75,8 @@ import Step4 from "../views/forgotSteps/Step4.vue";
 // Acceder al store de Pinia
 const forgotPasswordStore = useForgotPasswordStore();
 
-const currentStep = ref(0);
-
 // Definir los componentes para cada paso
+const currentStep = ref(0);
 const stepComponents = [
     Step1,
     Step2,
@@ -76,7 +84,20 @@ const stepComponents = [
     Step4
 ];
 
-// Computed property para obtener el componente del paso actual
+// Control de visibilidad del pop-up
+const showPopup = ref(false);
+const popupTitle = ref("");
+const popupMessage = ref("");
+
+
+// Método para abrir el pop-up con título y mensaje dinámicos
+const openPopup = (title, message) => {
+    popupTitle.value = title;
+    popupMessage.value = message;
+    showPopup.value = true;
+};
+
+// Metodo para obtener el componente del paso actual
 const currentStepComponent = computed(() => {
     if (currentStep.value === 2) {
         // Mostrar Step3a o Step3b dependiendo del método
@@ -117,7 +138,7 @@ const nextStep = async () => {
             case 2: // Paso 3a o 3b
                 const method = forgotPasswordStore.step2.method;
                 if (method === 1) {
-                   // await forgotPasswordStore.validateStep3a();
+                    // await forgotPasswordStore.validateStep3a();
                 } else {
                     //await forgotPasswordStore.validateStep3b();
                 }
@@ -136,8 +157,7 @@ const nextStep = async () => {
             submitFinalData();
         }
     } catch (error) {
-        // TODO: Agregar un pop up para mostrar el mensaje de error
-        console.error(error);
+        openPopup("Error!", error.message);
     }
 };
 

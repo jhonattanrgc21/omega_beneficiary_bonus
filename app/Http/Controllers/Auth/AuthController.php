@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
-use App\Http\Requests\ForgotPassword\ValidateAffiliateRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
 use App\Services\HttpService;
 
-class ForgotPasswordController extends Controller
+class AuthController extends Controller
 {
-    protected $validateAffiliateUrl = '/validar/afiliado';
+    protected $loginUrl = '/login/authenticate';
     protected $apiService;
 
     public function __construct(HttpService $apiService)
@@ -15,7 +16,7 @@ class ForgotPasswordController extends Controller
         $this->apiService = $apiService;
     }
 
-    public function validateAffiliate(ValidateAffiliateRequest $request)
+    public function login(LoginRequest $request)
     {
         $contentType = $request->header('Content-Type');
         $accept = $request->header('Accept');
@@ -25,6 +26,6 @@ class ForgotPasswordController extends Controller
             'Accept' => $accept,
         ];
 
-        return $this->apiService->post($this->validateAffiliateUrl, $request->validated(), $headers);
+        return $this->apiService->post($this->loginUrl, $request->validated(), $headers);
     }
 }

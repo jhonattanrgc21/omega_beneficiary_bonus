@@ -37,8 +37,8 @@
             </CustomButton>
 
             <!-- Mostrar mensaje de error del servidor -->
-            <div v-if="serverError.message" class="text-xs font-poppins-regular text-[#F16D85] mt-6 text-center">
-                {{ serverError.message }}
+            <div v-if="serverErrorMessage" class="text-xs font-poppins-regular text-[#F16D85] mt-6 text-center">
+                {{ serverErrorMessage }}
             </div>
         </form>
 
@@ -52,7 +52,7 @@
 </template>
 
 <script setup>
-import { reactive, computed } from "vue";
+import { ref, computed } from "vue";
 import router from "@routes/index.js";
 import InputField from "@components/InputField.vue";
 import CustomButton from "@components/CustomButton.vue";
@@ -66,9 +66,7 @@ const { form, touched, errors, setTouched } = useForm({
     password: ''
 });
 
-const serverError = reactive({
-    message: null
-});
+const serverErrorMessage = ref(null)
 
 const validateUsername = () => {
     if (!touched.username) {
@@ -107,9 +105,9 @@ const login = async () => {
         router.push("/profile/account");
     } catch (error) {
         if (error.response && error.response.data && error.response.data.message) {
-            serverError.message = error.response.data.message;
+            serverErrorMessage.value = error.response.data.message;
         } else {
-            serverError.message = error;
+            serverErrorMessage.value = error.message;
         }
     }
 };
