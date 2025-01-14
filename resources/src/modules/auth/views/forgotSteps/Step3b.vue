@@ -4,12 +4,12 @@
         <form class="flex flex-col justify-between h-full">
 
             <!-- Label común para el teléfono -->
-            <label class="block text-sm font-medium text-translucentBlack mb-2">Teléfono</label>
+            <label for="phoneCode" class="block text-sm font-medium text-translucentBlack mb-2">Teléfono</label>
 
-            <div class="flex items-center mb-4">
+            <div class="flex items-center">
                 <!-- Select para el código de teléfono con flex-grow-0 para no crecer -->
-                <CustomSelect @focus="setTouched('phoneCode')" @input="validatePhoneCode" @blur="validatePhoneCode" id="phoneCode"
-                    v-model="form.phoneCode" class="flex-grow-0">
+                <CustomSelect @focus="setTouched('phoneCode')" @input="validatePhoneCode" @blur="validatePhoneCode"
+                    id="phoneCode" v-model="form.phoneCode" class="flex-grow-0">
                     <option value="0412">0412</option>
                     <option value="0414">0414</option>
                     <option value="0424">0424</option>
@@ -20,10 +20,11 @@
                 <!-- Input para el número de teléfono con flex-grow-1 para que ocupe más espacio -->
                 <InputField @focus="setTouched('phoneNumber')" @input="validatePhoneNumber" @blur="validatePhoneNumber"
                     id="phoneNumber" type="text" placeholder="Ingrese su número" v-model="form.phoneNumber"
-                    :error="errors.phoneNumber" class="flex-grow" />
+                    class="flex-grow" />
             </div>
+            <p v-if="errors.phoneNumber" class="text-xs font-poppins-regular text-[#F16D85] pl-4 mt-2 mb-4">{{ errors.phoneNumber }}</p>
 
-            <div class="mb-4">
+            <div class="mt-4 mb-4">
                 <InputField @focus="setTouched('securityQuestionAnswer1')" @input="validateSecurityQuestionAnswer1"
                     @blur="validateSecurityQuestionAnswer1" label="Respuesta 1" id="securityQuestionAnswer1"
                     placeholder="Ingrese su respuesta" v-model="form.securityQuestionAnswer1"
