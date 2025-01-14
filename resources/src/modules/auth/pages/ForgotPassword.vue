@@ -42,7 +42,7 @@
                 </CustomButton>
             </div>
 
-            <div class="mt-4 text-center w-full">
+            <div class="mt-6 text-center w-full">
                 <router-link to="/auth/login" class="text-sm text-[#007FFF] font-poppins-medium hover:text-[#0066CC]">
                     Volver al inicio de sesión
                 </router-link>
@@ -166,16 +166,17 @@ const prevStep = () => {
     if (currentStep.value > 0) {
         currentStep.value--;
         switch (currentStep.value) {
-            case 1:
+            case 0:
                 forgotPasswordStore.clearStep2();
                 break;
-            case 2:
+            case 1:
                 const method = forgotPasswordStore.step2.method;
                 method == 1 ? forgotPasswordStore.clearStep3a() : forgotPasswordStore.clearStep3b();
                 break;
-            case 3:
-                forgotPasswordStore.clearStep4();
+            case 2:
+            forgotPasswordStore.clearStep4();
                 break;
+
         }
     }
 };

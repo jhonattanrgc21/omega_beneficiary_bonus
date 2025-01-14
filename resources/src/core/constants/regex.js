@@ -1,3 +1,12 @@
-export const REGEX_USERNAME_FORMAT = /^[a-zA-Z0-9_.]+$/; // Solo letras, números, guiones bajos y puntos
-export const REGEX_USERNAME_STARTS_WITH_NUMBER = /^\d/;  // Inicia con un número
+// Solo letras, números, guiones bajos y puntos
+export const REGEX_USERNAME_FORMAT = /^[a-zA-Z0-9_.]+$/;
+// Inicia con un número
+export const REGEX_USERNAME_STARTS_WITH_NUMBER = /^\d/;
+
 export const ONLY_NUMBERS_REGEX = /^\d+$/;
+
+// Expresión regular para validar el formato permitido
+export const TEXT_INPUT_FORMAT_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚñÑãõÃÕ0-9\s(),.-]+$/;
+
+// Expresión regular para verificar que el texto comience con una letra
+export const TEXT_INPUT_STARTS_WITH_LETTER_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚñÑãõÃÕ]/;

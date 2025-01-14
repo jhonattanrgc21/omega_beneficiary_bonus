@@ -19,7 +19,8 @@ export const useForgotPasswordStore = defineStore("forgotPassword", {
             isValid: false,
         }),
         step3b: reactive({
-            phone: "",
+            phoneCode: "0412",
+            phoneNumber: "",
             securityQuestionAnswer1: "",
             securityQuestionAnswer2: "",
             securityQuestionAnswer3: "",
@@ -68,8 +69,11 @@ export const useForgotPasswordStore = defineStore("forgotPassword", {
         },
 
         // Step 3b
-        setStep3bPhone(value) {
-            this.step3b.phone = value;
+        setStep3bPhoneCode(value) {
+            this.step3b.phoneCode = value;
+        },
+        setStep3bPhoneNumber(value) {
+            this.step3b.phoneNumber = value;
         },
         setStep3bSecurityQuestionAnswer1(value) {
             this.step3b.securityQuestionAnswer1 = value;
@@ -112,7 +116,8 @@ export const useForgotPasswordStore = defineStore("forgotPassword", {
             this.step3a.isValid = false;
         },
         clearStep3b() {
-            this.step3b.phone = "";
+            this.step3b.phoneCode = "0412";
+            this.step3b.phoneNumber = "";
             this.step3b.securityQuestionAnswer1 = "";
             this.step3b.securityQuestionAnswer2 = "";
             this.step3b.securityQuestionAnswer3 = "";
