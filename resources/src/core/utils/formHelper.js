@@ -4,10 +4,16 @@ import { reactive } from "vue";
 export const useForm = (initialState) => {
     const form = reactive({ ...initialState });
     const touched = reactive(
-        Object.keys(initialState).reduce((acc, key) => ({ ...acc, [key]: false }), {})
+        Object.keys(initialState).reduce(
+            (acc, key) => ({ ...acc, [key]: false }),
+            {}
+        )
     );
     const errors = reactive(
-        Object.keys(initialState).reduce((acc, key) => ({ ...acc, [key]: null }), {})
+        Object.keys(initialState).reduce(
+            (acc, key) => ({ ...acc, [key]: null }),
+            {}
+        )
     );
 
     // Función para marcar el campo como tocado

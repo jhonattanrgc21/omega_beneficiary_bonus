@@ -7,7 +7,7 @@ use App\Services\HttpService;
 
 class ForgotPasswordController extends Controller
 {
-    protected $loginUrl = '/validar/afiliado';
+    protected $validateAffiliateUrl = '/validar/afiliado';
     protected $apiService;
 
     public function __construct(HttpService $apiService)
@@ -25,6 +25,6 @@ class ForgotPasswordController extends Controller
             'Accept' => $accept,
         ];
 
-        return $this->apiService->post($this->loginUrl, $request->validated(), $headers);
+        return $this->apiService->post($this->validateAffiliateUrl, $request->validated(), $headers);
     }
 }

@@ -56,6 +56,7 @@
 import { ref, computed } from 'vue';
 import CustomButton from "@components/CustomButton.vue";
 import { useForgotPasswordStore } from '../stores/useForgotPasswordStore';
+import { forgotPasswordService } from '../services/forgotPasswordService.js';
 import Step1 from "../views/forgotSteps/Step1.vue";
 import Step2 from "../views/forgotSteps/Step2.vue";
 import Step3a from "../views/forgotSteps/Step3a.vue";
@@ -98,53 +99,47 @@ const isStepValid = (stepIndex) => {
 };
 
 // Función para avanzar al siguiente paso
-const nextStep = () => {
-    if (currentStep.value < stepComponents.length - 1) {
-        currentStep.value++;
-    } else {
-        // Realizar la solicitud final al backend
-        submitFinalData();
+const nextStep = async () => {
+    try {
+        // Verifica el paso actual y realiza la petición correspondiente
+        switch (currentStep.value) {
+            case 0: // Paso 1
+                const identification = forgotPasswordStore.step1.identification;
+                const date = forgotPasswordStore.step1.date;
+                const cardNumber = forgotPasswordStore.step1.cardNumber;
+                await forgotPasswordService.validateAffiliate(identification, cardNumber, date);
+                break;
+
+            case 1: // Paso 2
+
+                break;
+
+            case 2: // Paso 3a o 3b
+                const method = forgotPasswordStore.step2.method;
+                if (method === 1) {
+                   // await forgotPasswordStore.validateStep3a();
+                } else {
+                    //await forgotPasswordStore.validateStep3b();
+                }
+                break;
+
+            case 3: // Paso 4
+
+                break;
+        }
+
+        // Si la validación es exitosa, avanza al siguiente paso
+        if (currentStep.value < stepComponents.length - 1) {
+            currentStep.value++;
+        } else {
+            // Realizar la solicitud final al backend
+            submitFinalData();
+        }
+    } catch (error) {
+        // TODO: Agregar un pop up para mostrar el mensaje de error
+        console.error(error);
     }
 };
-
-// const nextStep = async () => {
-//     try {
-//         // Verifica el paso actual y realiza la petición correspondiente
-//         switch (currentStep.value) {
-//             case 0: // Paso 1
-//                 isValid = await forgotPasswordStore.validateStep1();
-//                 break;
-
-//             case 1: // Paso 2
-//                 isValid = await forgotPasswordStore.validateStep2();
-//                 break;
-
-//             case 2: // Paso 3a o 3b
-//                 const method = forgotPasswordStore.step2.method;
-//                 if (method === 1) {
-//                     isValid = await forgotPasswordStore.validateStep3a();
-//                 } else {
-//                     isValid = await forgotPasswordStore.validateStep3b();
-//                 }
-//                 break;
-
-//             case 3: // Paso 4
-//                 isValid = await forgotPasswordStore.validateStep4();
-//                 break;
-//         }
-
-//         // Si la validación es exitosa, avanza al siguiente paso
-//         if (currentStep.value < stepComponents.length - 1) {
-//             currentStep.value++;
-//         } else {
-//             // Realizar la solicitud final al backend
-//             submitFinalData();
-//         }
-//     } catch (error) {
-//         // TODO: Agregar un pop up para mostrar el mensaje de error
-//         console.error('Error al validar el paso:', error);
-//     }
-// };
 
 // Función para retroceder al paso anterior
 const prevStep = () => {

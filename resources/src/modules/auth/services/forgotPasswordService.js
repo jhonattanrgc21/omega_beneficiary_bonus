@@ -1,16 +1,15 @@
 import http from "@http/api.js";
 import { useForgotPasswordStore } from "../stores/useForgotPasswordStore";
+import { formatDate } from '@utils/formatHelper.js';
 
-const VALIDATE_AFILIATE_URL = "/forgot-password/validateAffiliate";
+const VALIDATE_AFILIATE_URL = "auth/forgot-password/validateAffiliate";
 
 // Acceder al store de Pinia
 const forgotPasswordStore = useForgotPasswordStore();
 
 export const forgotPasswordService = {
     validateAffiliate: async (identification, card, date) => {
-
-        // TODO: crear una funcion para formatear la fecha antes delanzar la peticion
-
+        date = formatDate(date, 'MM-DD-YYYY')
         const response = await http.post(VALIDATE_AFILIATE_URL, {
             Cedula: identification,
             Numero: card,
