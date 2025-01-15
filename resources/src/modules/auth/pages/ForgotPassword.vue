@@ -49,23 +49,25 @@
             </div>
 
             <WarningPopup :title="popupTitle" :message="popupMessage" :buttonText="'Aceptar'" :isVisible="showPopup"
-                :iconSrc="'error.svg'" @close="showPopup = false">
+                @close="closePopup">
                 <template #icon>
-                    <img src="@icons/error.svg" alt="icon" class="w-12 h-12 mb-4">
+                    <img :src="isErrorPopup ? errorIcon : successIcon" alt="icon" class="w-12 h-12 mb-4">
                 </template>
             </WarningPopup>
-
         </div>
-
     </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
+import { onBeforeRouteLeave } from 'vue-router';
+import router from "@routes/index.js";
 import CustomButton from "@components/CustomButton.vue";
 import WarningPopup from "@components/WarningPopup.vue";
 import { useForgotPasswordStore } from '../stores/useForgotPasswordStore';
 import { forgotPasswordService } from '../services/forgotPasswordService.js';
+import errorIcon from '@icons/error.svg';
+import successIcon from '@icons/icono_check_circulo_48x48.svg';
 import Step1 from "../views/forgotSteps/Step1.vue";
 import Step2 from "../views/forgotSteps/Step2.vue";
 import Step3a from "../views/forgotSteps/Step3a.vue";
@@ -74,6 +76,12 @@ import Step4 from "../views/forgotSteps/Step4.vue";
 
 // Acceder al store de Pinia
 const forgotPasswordStore = useForgotPasswordStore();
+
+// Limpia el estado al salir de la ruta
+onBeforeRouteLeave((to, from, next) => {
+    forgotPasswordStore.clearAllSteps(); // Llama al método de limpieza del store
+    next(); // Permite la navegación
+});
 
 // Definir los componentes para cada paso
 const currentStep = ref(0);
@@ -88,6 +96,7 @@ const stepComponents = [
 const showPopup = ref(false);
 const popupTitle = ref("");
 const popupMessage = ref("");
+const isErrorPopup = ref(true);
 
 
 // Método para abrir el pop-up con título y mensaje dinámicos
@@ -95,6 +104,17 @@ const openPopup = (title, message) => {
     popupTitle.value = title;
     popupMessage.value = message;
     showPopup.value = true;
+};
+
+const closePopup = () => {
+    if (!isErrorPopup.value) {
+        router.push("/auth/login");
+    }
+
+    popupTitle.value = '';
+    popupMessage.value = '';
+    showPopup.value = false;
+    isErrorPopup.value = false;
 };
 
 // Metodo para obtener el componente del paso actual
@@ -123,40 +143,40 @@ const isStepValid = (stepIndex) => {
 const nextStep = async () => {
     try {
         // Verifica el paso actual y realiza la petición correspondiente
-        switch (currentStep.value) {
-            case 0: // Paso 1
-                const identification = forgotPasswordStore.step1.identification;
-                const date = forgotPasswordStore.step1.date;
-                const cardNumber = forgotPasswordStore.step1.cardNumber;
-                await forgotPasswordService.validateAffiliate(identification, cardNumber, date);
-                break;
-            case 2: // Paso 3a o 3b
-                const method = forgotPasswordStore.step2.method;
-                if (method === 1) {
-                    // await forgotPasswordStore.validateStep3a();
-                } else {
-                    const phone = forgotPasswordStore.step3b.phoneCode + forgotPasswordStore.step3b.phoneNumber;
-                    const securityQuestionAnswer1 = forgotPasswordStore.step3b.securityQuestionAnswer1;
-                    const securityQuestionAnswer2 = forgotPasswordStore.step3b.securityQuestionAnswer2;
-                    const securityQuestionAnswer3 = forgotPasswordStore.step3b.securityQuestionAnswer3;
-                    await forgotPasswordStore.answerChallenge(phone, securityQuestionAnswer1, securityQuestionAnswer2, securityQuestionAnswer3);
-                }
-                break;
-
-            case 3: // Paso 4
-
-                break;
+        if (currentStep.value == 0) {
+            const identification = forgotPasswordStore.step1.identification;
+            const date = forgotPasswordStore.step1.date;
+            const cardNumber = forgotPasswordStore.step1.cardNumber;
+            await forgotPasswordService.validateAffiliate(identification, cardNumber, date);
         }
+
+        if (currentStep.value == 2) {
+            const method = forgotPasswordStore.step2.method;
+            if (method === 1) {
+                // await forgotPasswordStore.validateStep3a();
+            } else {
+                const phone = forgotPasswordStore.step3b.phoneCode + forgotPasswordStore.step3b.phoneNumber;
+                const securityQuestionAnswer1 = forgotPasswordStore.step3b.securityQuestionAnswer1;
+                const securityQuestionAnswer2 = forgotPasswordStore.step3b.securityQuestionAnswer2;
+                const securityQuestionAnswer3 = forgotPasswordStore.step3b.securityQuestionAnswer3;
+                await forgotPasswordStore.answerChallenge(phone, securityQuestionAnswer1, securityQuestionAnswer2, securityQuestionAnswer3);
+            }
+        }
+
 
         // Si la validación es exitosa, avanza al siguiente paso
-        if (currentStep.value < stepComponents.length - 1) {
-            currentStep.value++;
-        } else {
+        if (currentStep.value < stepComponents.length - 1) currentStep.value++;
+        else {
             // Realizar la solicitud final al backend
-            submitFinalData();
+            const newPassword = forgotPasswordStore.step4.newPassword;
+            const confirmPassword = forgotPasswordStore.step4.confirmPassword;
+            await forgotPasswordService.changePassword(newPassword, confirmPassword);
+            isErrorPopup.value = false;
+            openPopup("¡Éxito!", 'Su contraseña ha sido restablecida con éxito. Ahora puedes iniciar sesión.');
         }
     } catch (error) {
-        openPopup("Error!", error.message);
+        isErrorPopup.value = true;
+        openPopup("¡Error!", error.message);
     }
 };
 
@@ -173,17 +193,10 @@ const prevStep = () => {
                 method == 1 ? forgotPasswordStore.clearStep3a() : forgotPasswordStore.clearStep3b();
                 break;
             case 2:
-            forgotPasswordStore.clearStep4();
+                forgotPasswordStore.clearStep4();
                 break;
 
         }
     }
 };
-
-// Enviar datos al backend (cuando el usuario llega al último paso)
-const submitFinalData = () => {
-    // Aquí deberías realizar la petición al backend para cambiar la contraseña o lo que sea necesario
-    console.log('Enviando datos al backend...');
-};
-
 </script>

@@ -4,6 +4,11 @@ import {
     ONLY_NUMBERS_REGEX,
     TEXT_INPUT_FORMAT_REGEX,
     TEXT_INPUT_STARTS_WITH_LETTER_REGEX,
+    LOWERCASE_REGEX,
+    UPPERCASE_REGEX,
+    DIGIT_REGEX,
+    SPECIAL_CHAR_REGEX,
+    INVALID_SPECIAL_CHAR_REGEX,
 } from "@constants/regex";
 
 export const validateUsername = (
@@ -233,6 +238,108 @@ export const validateTextInput = (
     // Validar el formato permitido
     if (rules.format && !TEXT_INPUT_FORMAT_REGEX.test(trimmedValue)) {
         return errorsMessages.format;
+    }
+
+    // Si pasa todas las validaciones, no hay errores
+    return null;
+};
+
+// Función de validación
+export const validateNewPassword = (
+    password,
+    currentPassword = null,
+    rules = {
+        required: true,
+        minLength: true,
+        lowercase: true,
+        uppercase: true,
+        digit: true,
+        specialChar: true,
+        mismatch: true,
+    }
+) => {
+    const trimmedPassword = password.trim();
+    const errorsMessages = {
+        empty: "La contraseña es obligatoria.",
+        tooShort: "La contraseña debe tener al menos 8 caracteres.",
+        noLowercase:
+            "La contraseña debe contener al menos una letra minúscula.",
+        noUppercase:
+            "La contraseña debe contener al menos una letra mayúscula.",
+        noDigit: "La contraseña debe contener al menos un número.",
+        noSpecialChar:
+            "La contraseña debe contener al menos un carácter especial válido (.!#$%&()*+-).",
+        invalidSpecialChar: "La contraseña contiene caracteres no permitidos.",
+        mismatch: "La nueva contraseña no puede ser igual a la actual.",
+    };
+
+    // Validar si el campo es obligatorio
+    if (rules.required && trimmedPassword.length === 0) {
+        return errorsMessages.empty;
+    }
+
+    // Validar al menos una letra minúscula
+    if (rules.lowercase && !LOWERCASE_REGEX.test(trimmedPassword)) {
+        return errorsMessages.noLowercase;
+    }
+
+    // Validar al menos una letra mayúscula
+    if (rules.uppercase && !UPPERCASE_REGEX.test(trimmedPassword)) {
+        return errorsMessages.noUppercase;
+    }
+
+    // Validar al menos un número
+    if (rules.digit && !DIGIT_REGEX.test(trimmedPassword)) {
+        return errorsMessages.noDigit;
+    }
+
+    // Validar al menos un carácter especial válido
+    if (rules.specialChar && !SPECIAL_CHAR_REGEX.test(trimmedPassword)) {
+        return errorsMessages.noSpecialChar;
+    }
+
+    // Validar caracteres no permitidos
+    if (rules.specialChar && INVALID_SPECIAL_CHAR_REGEX.test(trimmedPassword)) {
+        return errorsMessages.invalidSpecialChar;
+    }
+
+    // Validar longitud mínima
+    if (rules.minLength && trimmedPassword.length < 8) {
+        return errorsMessages.tooShort;
+    }
+
+    // Validar si la nueva contraseña es igual a la actual
+    if (
+        rules.mismatch &&
+        currentPassword &&
+        trimmedPassword === currentPassword
+    ) {
+        return errorsMessages.mismatch;
+    }
+
+    // Si pasa todas las validaciones, no hay errores
+    return null;
+};
+
+export const validateConfirmNewPassword = (
+    confirmPassword,
+    password,
+    rules = { required: true, match: true }
+) => {
+    const trimmedConfirmPassword = confirmPassword.trim();
+    const errorsMessages = {
+        empty: "El campo es obligatorio.",
+        mismatch: "La confirmación debe ser igual a la contraseña ingresada.",
+    };
+
+    // Validar si el campo es obligatorio
+    if (rules.required && trimmedConfirmPassword.length === 0) {
+        return errorsMessages.empty;
+    }
+
+    // Validar si coincide con la contraseña ingresada
+    if (rules.match && trimmedConfirmPassword !== password) {
+        return errorsMessages.mismatch;
     }
 
     // Si pasa todas las validaciones, no hay errores

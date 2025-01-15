@@ -128,5 +128,13 @@ export const useForgotPasswordStore = defineStore("forgotPassword", {
             this.step4.confirmPassword = "";
             this.step4.isValid = false;
         },
+
+        clearAllSteps(){
+            this.clearStep1();
+            this.clearStep2();
+            this.clearStep3a();
+            this.clearStep3b();
+            this.clearStep4();
+        }
     },
 });

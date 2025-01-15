@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ForgotPassword\AnswerChallengeRequest;
+use App\Http\Requests\ForgotPassword\ChangePasswordRequest;
 use App\Http\Requests\ForgotPassword\ValidateAffiliateRequest;
 use App\Services\HttpService;
 
@@ -11,6 +12,7 @@ class ForgotPasswordController extends Controller
 {
     protected $validateAffiliateUrl = '/validar/afiliado';
     protected $answerChallengeUrl = '/desafio/responder';
+    protected $changePasswordUrl = '/cambiarclaveporolvido';
     protected $apiService;
 
     public function __construct(HttpService $apiService)
@@ -42,5 +44,18 @@ class ForgotPasswordController extends Controller
         ];
 
         return $this->apiService->post($this->answerChallengeUrl, $request->validated(), $headers);
+    }
+
+    public function changePassword(ChangePasswordRequest $request)
+    {
+        $contentType = $request->header('Content-Type');
+        $accept = $request->header('Accept');
+
+        $headers = [
+            'Content-Type' => $contentType,
+            'Accept' => $accept,
+        ];
+
+        return $this->apiService->post($this->changePasswordUrl, $request->validated(), $headers);
     }
 }

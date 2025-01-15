@@ -9,5 +9,6 @@ Route::prefix('auth')->group(function () {
     Route::prefix('forgot-password')->group(function () {
         Route::post('validateAffiliate', [ForgotPasswordController::class, 'validateAffiliate']);
         Route::post('answerChallenge', [ForgotPasswordController::class, 'answerChallenge']);
+        Route::post('changePassword', [ForgotPasswordController::class, 'changePassword']);
     });
 });

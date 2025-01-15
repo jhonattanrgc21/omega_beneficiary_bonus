@@ -10,3 +10,10 @@ export const TEXT_INPUT_FORMAT_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚñÑãõÃÕ
 
 // Expresión regular para verificar que el texto comience con una letra
 export const TEXT_INPUT_STARTS_WITH_LETTER_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚñÑãõÃÕ]/;
+
+// Expresiones para el establecimiento de contraseñas
+export const LOWERCASE_REGEX = /[a-z]/;
+export const UPPERCASE_REGEX = /[A-Z]/;
+export const DIGIT_REGEX = /\d/;
+export const SPECIAL_CHAR_REGEX = /[.!#$%&()*+-]/;
+export const INVALID_SPECIAL_CHAR_REGEX = /[^a-zA-Z0-9.!#$%&()*+-]/;

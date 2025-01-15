@@ -3,6 +3,8 @@ import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
 import vue from "@vitejs/plugin-vue";
 import { viteStaticCopy } from "vite-plugin-static-copy";
+import svgr from 'vite-plugin-svgr';
+
 
 export default defineConfig({
     plugins: [
@@ -11,16 +13,17 @@ export default defineConfig({
             refresh: true,
         }),
         vue(),
+        svgr(),
         viteStaticCopy({
             targets: [
                 {
                     // Copia la carpeta de SVG a ublic/assets/svg
-                    src: "resources/assets/svg/*",
+                    src: "resources/src/assets/svg/*",
                     dest: "assets/svg",
                 },
                 {
                     // Copia la carpeta de images a ublic/assets/iamges
-                    src: "resources/assets/images/*",
+                    src: "resources/src/assets/images/*",
                     dest: "assets/images",
                 },
             ],

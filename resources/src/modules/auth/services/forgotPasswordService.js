@@ -44,4 +44,20 @@ export const forgotPasswordService = {
             );
         }
     },
+
+    changePassword: async (newPassword, confirmPassword) => {
+        const response = await http.post(ANSWER_CHALLENGE_URL, {
+            IdUsuario: forgotPasswordStore.step1.response.userId,
+            IdEmisor: forgotPasswordStore.step1.response.emisorId,
+            ContrasenaNuevaTMP: newPassword,
+            ConfirmarcontrasenaTMP: confirmPassword,
+        });
+
+        if (response.data.code !== 200) {
+            throw new Error(
+                response.data.message ||
+                    "Los datos suministrados son incorrectos"
+            );
+        }
+    },
 };
