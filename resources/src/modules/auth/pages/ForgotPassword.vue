@@ -1,18 +1,18 @@
 <template>
-    <div class="flex justify-center items-center min-h-screen bg-gray-100">
+    <div class="flex items-center justify-center min-h-screen bg-gray-100">
         <!-- Card con dimensiones mínimas, pero responsiva en pantallas pequeñas -->
         <div
             class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md sm:min-w-[400px] md:min-w-[500px] min-h-[500px] flex flex-col">
             <!-- Stepper Title -->
-            <h1 class="text-xl font-poppins-medium text-center mb-6">Recuperación de contraseña</h1>
+            <h1 class="mb-6 text-xl text-center font-poppins-medium">Recuperación de contraseña</h1>
 
             <!-- Stepper Navigation -->
-            <div class="relative flex justify-between items-center w-full">
+            <div class="relative flex items-center justify-between w-full">
                 <div
-                    class="absolute top-1/2 left-0 right-0 h-1 bg-gray-300 font-poppins-medium transform -translate-y-1/2">
+                    class="absolute left-0 right-0 h-1 transform -translate-y-1/2 bg-gray-300 top-1/2 font-poppins-medium">
                 </div>
                 <div v-for="(step, index) in stepComponents" :key="index" class="relative z-10 flex items-center">
-                    <div class="flex items-center justify-center w-8 h-8 rounded-full border-2 font-poppins-semibold"
+                    <div class="flex items-center justify-center w-8 h-8 border-2 rounded-full font-poppins-semibold"
                         :class="{
                             'bg-blue-500 text-white border-blue-500': currentStep >= index,
                             'bg-white text-gray-500 border-gray-300': currentStep < index,
@@ -23,7 +23,7 @@
             </div>
 
             <!-- Step Content -->
-            <div class="mt-8 flex-grow">
+            <div class="flex-grow mt-8">
                 <!-- Aquí se cargarán los componentes dinámicamente -->
                 <component :is="currentStepComponent" />
             </div>
@@ -42,7 +42,7 @@
                 </CustomButton>
             </div>
 
-            <div class="mt-6 text-center w-full">
+            <div class="w-full mt-6 text-center">
                 <router-link to="/auth/login" class="text-sm text-[#007FFF] font-poppins-medium hover:text-[#0066CC]">
                     Volver al inicio de sesión
                 </router-link>
@@ -51,7 +51,7 @@
             <WarningPopup :title="popupTitle" :message="popupMessage" :buttonText="'Aceptar'" :isVisible="showPopup"
                 :iconSrc="'error.svg'" @close="showPopup = false">
                 <template #icon>
-                    <img src="@icons/error.svg" alt="icon" class="h-12 w-12 mb-4">
+                    <img src="@icons/error.svg" alt="icon" class="w-12 h-12 mb-4">
                 </template>
             </WarningPopup>
 
@@ -130,17 +130,16 @@ const nextStep = async () => {
                 const cardNumber = forgotPasswordStore.step1.cardNumber;
                 await forgotPasswordService.validateAffiliate(identification, cardNumber, date);
                 break;
-
-            case 1: // Paso 2
-
-                break;
-
             case 2: // Paso 3a o 3b
                 const method = forgotPasswordStore.step2.method;
                 if (method === 1) {
                     // await forgotPasswordStore.validateStep3a();
                 } else {
-                    //await forgotPasswordStore.validateStep3b();
+                    const phone = forgotPasswordStore.step3b.phoneCode + forgotPasswordStore.step3b.phoneNumber;
+                    const securityQuestionAnswer1 = forgotPasswordStore.step3b.securityQuestionAnswer1;
+                    const securityQuestionAnswer2 = forgotPasswordStore.step3b.securityQuestionAnswer2;
+                    const securityQuestionAnswer3 = forgotPasswordStore.step3b.securityQuestionAnswer3;
+                    await forgotPasswordStore.answerChallenge(phone, securityQuestionAnswer1, securityQuestionAnswer2, securityQuestionAnswer3);
                 }
                 break;
 
