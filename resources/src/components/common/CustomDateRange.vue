@@ -104,6 +104,7 @@ onMounted(() => {
     flatpickr(datepicker.value, {
         mode: "range", // Habilitar selección de rango
         dateFormat: props.dateFormat,
+        disableMobile: true, // Fuerza el uso del calendario Flatpickr en móviles
         locale: Spanish,
         defaultDate: [props.modelValue.start, props.modelValue.end].filter(Boolean),
         onChange: (selectedDates, dateStr) => {

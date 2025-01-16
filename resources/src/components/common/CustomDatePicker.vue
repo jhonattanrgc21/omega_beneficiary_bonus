@@ -97,6 +97,7 @@ onMounted(() => {
     flatpickr(datepicker.value, {
         dateFormat: props.dateFormat,
         locale: Spanish,
+        disableMobile: true, // Fuerza el uso del calendario Flatpickr en móviles
         maxDate: props.showFutureDates ? null : date18YearsAgo, // Configurar fecha máxima
         defaultDate: props.modelValue || null, // Configurar la fecha inicial desde `modelValue`
         onChange: (selectedDates, dateStr) => {
