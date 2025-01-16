@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class CheckOTPRequest extends FormRequest
 {
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -15,8 +14,9 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'Username' => 'required|string',
-            'Password' => 'required|string|min:8',
+            'IdAfiliado' => 'required|string',
+            'Correo' => 'required|string|mail|max:80',
+            'TokenCorreo' => 'required|string|size:6',
         ];
     }
 }

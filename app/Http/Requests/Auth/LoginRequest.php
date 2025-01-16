@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\ForgotPassword;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SendOTPRequest extends FormRequest
+class LoginRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,9 +14,8 @@ class SendOTPRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'IdAfiliado' => 'required|string',
-            'Correo' => 'required|string|mail|max:80',
-            "Celular" => 'required|string|size:11',
+            'Username' => 'required|string',
+            'Password' => 'required|string|min:8',
         ];
     }
 }

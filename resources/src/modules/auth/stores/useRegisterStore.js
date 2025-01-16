@@ -1,4 +1,7 @@
-export const useForgotPasswordStore = defineStore("register", {
+import { defineStore } from "pinia";
+import { reactive } from "vue";
+
+export const useRegisterStore = defineStore("register", {
     state: () => ({
         step1: reactive({
             identification: "",

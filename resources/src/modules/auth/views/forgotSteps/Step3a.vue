@@ -34,6 +34,7 @@ import errorIcon from '@icons/error.svg';
 import { validateOtpCode as validateOtp } from "@utils/validators";
 import { useForgotPasswordStore } from '../../stores/useForgotPasswordStore';
 import { useForm } from "@utils/formHelper";
+import { forgotPasswordService } from "../../services/forgotPasswordService";
 
 // Acceder al store de Pinia
 const forgotPasswordStore = useForgotPasswordStore();
@@ -44,8 +45,12 @@ const isExpired = ref(false);
 let intervalId = null;
 
 const { form, touched, errors, setTouched } = useForm({
-    otpCode: forgotPasswordStore.step3a.isValid,
+    otpCode: forgotPasswordStore.step3a.otpCode,
 });
+
+const showPopup = ref(false);
+const popupMessage = ref("");
+
 
 // Método para abrir el pop-up con título y mensaje dinámicos
 const openPopup = (message) => {
@@ -78,12 +83,9 @@ const hasErrors = computed(() => {
     return Object.values(errors).some(error => error !== null) || !form.otpCode;
 });
 
-
-
-
 const sendOTP = async () => {
     try {
-        await forgotPasswordStore.sendOtp();
+        await forgotPasswordService.sendOtp();
         otpSent.value = true;
         startTimer();
     } catch (error) {

@@ -94,6 +94,7 @@ const stepComponents = [
 
 // Control de visibilidad del pop-up
 const showPopup = ref(false);
+const popupTitle = ref("");
 const popupMessage = ref("");
 
 
@@ -142,23 +143,15 @@ const nextStep = async () => {
     try {
         // Verifica el paso actual y realiza la petición correspondiente
         if (currentStep.value == 0) {
-            const identification = forgotPasswordStore.step1.identification;
-            const date = forgotPasswordStore.step1.date;
-            const cardNumber = forgotPasswordStore.step1.cardNumber;
-            await forgotPasswordService.validateAffiliate(identification, cardNumber, date);
+            await forgotPasswordService.validateAffiliate();
         }
 
         if (currentStep.value == 2) {
             const method = forgotPasswordStore.step2.method;
             if (method === 1) {
-                const otpCode = forgotPasswordStore.step3a.otpCode;
-                await forgotPasswordService.checkOTP(otpCode);
+                await forgotPasswordService.checkOTP();
             } else {
-                const phone = forgotPasswordStore.step3b.phoneCode + forgotPasswordStore.step3b.phoneNumber;
-                const securityQuestionAnswer1 = forgotPasswordStore.step3b.securityQuestionAnswer1;
-                const securityQuestionAnswer2 = forgotPasswordStore.step3b.securityQuestionAnswer2;
-                const securityQuestionAnswer3 = forgotPasswordStore.step3b.securityQuestionAnswer3;
-                await forgotPasswordService.answerChallenge(phone, securityQuestionAnswer1, securityQuestionAnswer2, securityQuestionAnswer3);
+                await forgotPasswordService.answerChallenge();
             }
         }
 
@@ -167,9 +160,7 @@ const nextStep = async () => {
         if (currentStep.value < stepComponents.length - 1) currentStep.value++;
         else {
             // Realizar la solicitud final al backend
-            const newPassword = forgotPasswordStore.step4.newPassword;
-            const confirmPassword = forgotPasswordStore.step4.confirmPassword;
-            await forgotPasswordService.changePassword(newPassword, confirmPassword);
+            await forgotPasswordService.changePassword();
             isErrorPopup.value = false;
             openPopup("¡Éxito!", 'Su contraseña ha sido restablecida con éxito. Ahora puedes iniciar sesión.');
         }

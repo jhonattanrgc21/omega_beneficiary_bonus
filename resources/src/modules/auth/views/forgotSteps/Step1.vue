@@ -1,25 +1,23 @@
 <template>
-    <div>
-        <h2 class="text-lg font-semibold mb-4">Paso 1: Validación del beneficiario</h2>
-        <form class="flex flex-col justify-between h-full">
-            <InputField @focus="setTouched('identification')" @input="validateIdentification"
-                @blur="validateIdentification" label="Cedula" id="identification" type="text"
-                placeholder="Ingrese su cédula" v-model="form.identification" :error="errors.identification" />
+    <h2 class="mb-4 text-lg font-semibold">Paso 1: Validación del beneficiario</h2>
+    <form class="flex flex-col justify-between h-full">
+        <InputField @focus="setTouched('identification')" @input="validateIdentification" @blur="validateIdentification"
+            label="Cedula" id="identification" type="text" placeholder="Ingrese su cédula" v-model="form.identification"
+            :error="errors.identification" />
 
-            <div class="mt-4 mb-4">
-                <CustomDatePicker @focus="setTouched('date')" @input="validateDate" @blur="validateDate"
-                    label="Fecha de nacimiento" id="date" placeholder="Seleccione su fecha de nacimiento"
-                    v-model="form.date" :error="errors.date" />
-            </div>
+        <div class="mt-4 mb-4">
+            <CustomDatePicker @focus="setTouched('date')" @input="validateDate" @blur="validateDate"
+                label="Fecha de nacimiento" id="date" placeholder="Seleccione su fecha de nacimiento"
+                v-model="form.date" :error="errors.date" />
+        </div>
 
-            <div class="mb-8">
-                <InputField @focus="setTouched('cardNumber')" @input="validateCardNumber" @blur="validateCardNumber"
-                    label="Últimos 6 dígitos de la tarjeta" id="cardNumber" type="text"
-                    placeholder="Ingrese los últimos 6 dígitos de su tarjeta" v-model="form.cardNumber"
-                    :error="errors.cardNumber" />
-            </div>
-        </form>
-    </div>
+        <div class="mb-8">
+            <InputField @focus="setTouched('cardNumber')" @input="validateCardNumber" @blur="validateCardNumber"
+                label="Últimos 6 dígitos de la tarjeta" id="cardNumber" type="text"
+                placeholder="Ingrese los últimos 6 dígitos de su tarjeta" v-model="form.cardNumber"
+                :error="errors.cardNumber" />
+        </div>
+    </form>
 </template>
 
 <script setup>

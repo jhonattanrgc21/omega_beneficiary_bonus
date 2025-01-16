@@ -1,41 +1,42 @@
 <template>
-    <div class="flex justify-center items-center min-h-screen bg-gray-100">
-        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+    <div class="flex items-center justify-center min-h-screen bg-gray-100">
+        <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
             <!-- Stepper Title -->
-            <h1 class="text-xl font-poppins-medium text-center mb-6">Registro</h1>
+            <h1 class="mb-6 text-xl text-center font-poppins-medium">Registro</h1>
 
             <!-- Stepper Navigation -->
-            <div class="relative flex justify-between items-center w-full">
-                <div class="absolute top-1/2 left-0 right-0 h-1 bg-gray-300 transform -translate-y-1/2"></div>
-                <div v-for="(step, index) in steps" :key="index" class="relative z-10 flex items-center">
-                    <div class="flex items-center justify-center w-8 h-8 rounded-full border-2 font-poppins-semibold" :class="{
-                        'bg-blue-500 text-white border-blue-500': currentStep >= index,
-                        'bg-white text-gray-500 border-gray-300': currentStep < index,
-                    }">
+            <div class="relative flex items-center justify-between w-full">
+                <div
+                    class="absolute left-0 right-0 h-1 transform -translate-y-1/2 bg-gray-300 top-1/2 font-poppins-medium">
+                </div>
+                <div v-for="(step, index) in stepComponents" :key="index" class="relative z-10 flex items-center">
+                    <div class="flex items-center justify-center w-8 h-8 border-2 rounded-full font-poppins-semibold"
+                        :class="{
+                            'bg-blue-500 text-white border-blue-500': currentStep >= index,
+                            'bg-white text-gray-500 border-gray-300': currentStep < index,
+                        }">
                         {{ index + 1 }}
                     </div>
                 </div>
             </div>
 
             <!-- Step Content -->
-            <div class="mt-8">
-                <h2 class="text-lg font-semibold mb-4">{{ steps[currentStep] }}</h2>
-                <p class="text-gray-600">
-                    Contenido del paso {{ currentStep + 1 }}. Aquí puedes personalizar lo que
-                    se mostrará en cada paso.
-                </p>
+            <div class="flex-grow mt-8">
+                <!-- Aquí se cargarán los componentes dinámicamente -->
+                <component :is="currentStepComponent" />
             </div>
 
             <!-- Navigation Buttons -->
-            <div class="flex justify-between mt-6">
-                <CustomButton :disabled="currentStep === 0" @click="prevStep" variant="outline" type="button">
+            <div :class="currentStep === 0 ? 'flex justify-end w-full mt-auto' : 'flex justify-between w-full mt-auto'">
+                <CustomButton v-if="currentStep != 0" @click="prevStep" variant="outline" type="button">
                     Anterior
                 </CustomButton>
 
-                <CustomButton :disabled="currentStep === steps.length - 1" @click="nextStep" variant="primary" type="button">
-                    Siguiente
+                <CustomButton :disabled="!isStepValid(currentStep)" @click="nextStep" variant="primary" type="button">
+                    {{ currentStep === stepComponents.length - 1 ? 'Finalizar' : 'Continuar' }}
                 </CustomButton>
             </div>
+
 
             <!-- Link to Login -->
             <div class="mt-4 text-center">
@@ -43,29 +44,130 @@
                     Volver al inicio de sesión
                 </router-link>
             </div>
+
+            <WarningPopup :title="popupTitle" :message="popupMessage" :buttonText="'Aceptar'" :isVisible="showPopup"
+                @close="closePopup">
+                <template #icon>
+                    <img :src="isErrorPopup ? errorIcon : successIcon" alt="icon" class="w-24 h-24 mb-4">
+                </template>
+            </WarningPopup>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, computed } from 'vue';
+import { onBeforeRouteLeave } from 'vue-router';
+import router from "@routes/index.js";
+import { useRegisterStore } from '../stores/useRegisterStore'
+import { registerService } from '../services/registerService.js';
+import errorIcon from '@icons/error.svg';
+import successIcon from '@icons/icono_check_circulo_48x48.svg';
 import CustomButton from "@components/CustomButton.vue";
+import WarningPopup from "@components/WarningPopup.vue";
+import Step1 from '../views/registerSteps/Step1.vue';
+import Step2 from '../views/registerSteps/Step2.vue';
+import Step3 from '../views/registerSteps/Step3.vue';
+import Step4 from '../views/registerSteps/Step4.vue';
+import Step5 from '../views/registerSteps/Step5.vue';
 
-const steps = ref(["Paso 1", "Paso 2", "Paso 3", "Paso 4"]);
+const registerStore = useRegisterStore();
+
+
+// Limpia el estado al salir de la ruta
+onBeforeRouteLeave((to, from, next) => {
+    registerStore.clearAllSteps(); // Llama al método de limpieza del store
+    next(); // Permite la navegación
+});
+
+
+// Definir los componentes para cada paso
 const currentStep = ref(0);
-const router = useRouter();
+const stepComponents = [
+    Step1,
+    Step2,
+    Step3,
+    Step4,
+    Step5
+];
 
-const nextStep = () => {
-    if (currentStep.value < steps.value.length - 1) {
-        currentStep.value++;
+// Control de visibilidad del pop-up
+const showPopup = ref(false);
+const popupTitle = ref("");
+const popupMessage = ref("");
+
+
+// Método para abrir el pop-up con título y mensaje dinámicos
+const openPopup = (title, message) => {
+    popupTitle.value = title;
+    popupMessage.value = message;
+    showPopup.value = true;
+};
+
+const closePopup = () => {
+    if (!isErrorPopup.value) {
+        router.push("/profile/account");
+    }
+
+    popupTitle.value = '';
+    popupMessage.value = '';
+    showPopup.value = false;
+    isErrorPopup.value = false;
+};
+
+
+// Metodo para obtener el componente del paso actual
+const currentStepComponent = computed(() => {
+    return stepComponents[currentStep.value];
+});
+
+// Validar si el paso actual es válido
+const isStepValid = (stepIndex) => {
+    const stepName = `step${stepIndex + 1}`;
+    return registerStore[stepName].isValid;
+};
+
+
+// Función para avanzar al siguiente paso
+const nextStep = async () => {
+    try {
+        // Verifica el paso actual y realiza la petición correspondiente
+        if (currentStep.value == 0) await registerService.verifyAffiliate();
+        if (currentStep.value == 2) await registerService.checkOTP();
+
+
+        // Si la validación es exitosa, avanza al siguiente paso
+        if (currentStep.value < stepComponents.length - 1) currentStep.value++;
+        else {
+            // Realizar la solicitud final al backend
+            await registerService.register();
+            isErrorPopup.value = false;
+            openPopup("¡Éxito!", 'Su registro fue procesada con éxito.');
+        }
+    } catch (error) {
+        isErrorPopup.value = true;
+        openPopup("¡Error!", error.message);
     }
 };
 
+// Función para retroceder al paso anterior
 const prevStep = () => {
     if (currentStep.value > 0) {
         currentStep.value--;
+        switch (currentStep.value) {
+            case 0:
+                registerStore.clearStep2();
+                break;
+            case 1:
+                registerStore.clearStep3();
+                break;
+            case 2:
+                registerStore.clearStep4();
+                break;
+            case 3:
+                registerStore.clearStep5();
+                break;
+        }
     }
 };
-
 </script>

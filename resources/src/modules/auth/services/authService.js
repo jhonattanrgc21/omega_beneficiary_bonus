@@ -1,17 +1,19 @@
 import http from "@http/api.js";
 import { useSessionStore } from "@stores/useSessionStore";
+import { LOGIN_URL } from "@constants/url.js";
 
 export const authService = {
     login: async (username, password) => {
-        const response = await http.post("/auth/login", {
+        const response = await http.post(LOGIN_URL, {
             Username: username,
             Password: password,
         });
 
         if (response.data.code !== 200) {
-            throw new Error(response.data.message || "Credenciales incorrectas");
+            throw new Error(
+                response.data.message || "Credenciales incorrectas"
+            );
         }
-
 
         const token = response.data.token;
         const userInfo = response.data.data[0];
@@ -22,7 +24,7 @@ export const authService = {
     },
 
     logout: () => {
-        localStorage.removeItem('auth');
+        localStorage.removeItem("auth");
         useSessionStore.clearAuth();
-    }
+    },
 };

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\ForgotPassword;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CheckOTPRequest extends FormRequest
+class SendOTPRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -16,7 +16,7 @@ class CheckOTPRequest extends FormRequest
         return [
             'IdAfiliado' => 'required|string',
             'Correo' => 'required|string|mail|max:80',
-            'TokenCorreo' => 'required|string|size:6',
+            "Celular" => 'required|string|size:11',
         ];
     }
 }

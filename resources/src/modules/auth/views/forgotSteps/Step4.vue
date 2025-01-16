@@ -1,19 +1,17 @@
 <template>
-    <div>
-        <h2 class="mb-4 text-lg font-semibold">Paso 4: Cambio de contraseña</h2>
-        <form class="flex flex-col justify-between h-full">
-            <InputField @focus="setTouched('newPassword')" @input="validateNewPassword" @blur="validateNewPassword"
-                label="Nueva contraseña" id="newPassword" type="password" placeholder="Ingrese su contraseña"
-                v-model="form.newPassword" :error="errors.newPassword" />
+    <h2 class="mb-4 text-lg font-semibold">Paso 4: Cambio de contraseña</h2>
+    <form class="flex flex-col justify-between h-full">
+        <InputField @focus="setTouched('newPassword')" @input="validateNewPassword" @blur="validateNewPassword"
+            label="Nueva contraseña" id="newPassword" type="password" placeholder="Ingrese su contraseña"
+            v-model="form.newPassword" :error="errors.newPassword" />
 
-            <div class="mt-4 mb-4">
-                <InputField @focus="setTouched('confirmPassword')" @input="validateConfirmPassword"
-                    @blur="validateConfirmPassword" label="Confirmación de la contraseña" id="confirmPassword"
-                    type="password" placeholder="Ingrese la confirmación su contraseña" v-model="form.confirmPassword"
-                    :error="errors.confirmPassword" />
-            </div>
-        </form>
-    </div>
+        <div class="mt-4 mb-4">
+            <InputField @focus="setTouched('confirmPassword')" @input="validateConfirmPassword"
+                @blur="validateConfirmPassword" label="Confirmación de la contraseña" id="confirmPassword"
+                type="password" placeholder="Ingrese la confirmación su contraseña" v-model="form.confirmPassword"
+                :error="errors.confirmPassword" />
+        </div>
+    </form>
 </template>
 
 <script setup>
@@ -48,7 +46,7 @@ const validateConfirmPassword = () => {
         return;
     }
     forgotPasswordStore.setStep4ConfirmPassword(form.datconfirmPassworde);
-    errors.confirmPassword = validateConfirmNewP(form.confirmPassword, form.newPassword );
+    errors.confirmPassword = validateConfirmNewP(form.confirmPassword, form.newPassword);
 };
 
 // Computada para saber si hay errores en el formulario
