@@ -345,3 +345,33 @@ export const validateConfirmNewPassword = (
     // Si pasa todas las validaciones, no hay errores
     return null;
 };
+
+export const validateOtpCode = (
+    otpCode,
+    rules = { required: true, length: 6, format: true }
+) => {
+    const trimmedOtpCode = otpCode.trim();
+    const errorsMessages = {
+        empty: "El campo es obligatorio.",
+        format: "El valor debe contener solo números.",
+        length: "El valor debe contener exactamente 6 dígitos.",
+    };
+
+    // Validar si el campo es obligatorio
+    if (rules.required && trimmedOtpCode.length === 0) {
+        return errorsMessages.empty;
+    }
+
+    // Validar que solo contenga números
+    if (rules.format && !ONLY_NUMBERS_REGEX.test(trimmedOtpCode)) {
+        return errorsMessages.format;
+    }
+
+    // Validar que tenga exactamente 6 dígitos
+    if (rules.length && trimmedOtpCode.length !== rules.length) {
+        return errorsMessages.length;
+    }
+
+    // Si pasa todas las validaciones, no hay errores
+    return null;
+};

@@ -94,9 +94,7 @@ const stepComponents = [
 
 // Control de visibilidad del pop-up
 const showPopup = ref(false);
-const popupTitle = ref("");
 const popupMessage = ref("");
-const isErrorPopup = ref(false);
 
 
 // Método para abrir el pop-up con título y mensaje dinámicos
@@ -153,13 +151,14 @@ const nextStep = async () => {
         if (currentStep.value == 2) {
             const method = forgotPasswordStore.step2.method;
             if (method === 1) {
-                // await forgotPasswordStore.validateStep3a();
+                const otpCode = forgotPasswordStore.step3a.otpCode;
+                await forgotPasswordService.checkOTP(otpCode);
             } else {
                 const phone = forgotPasswordStore.step3b.phoneCode + forgotPasswordStore.step3b.phoneNumber;
                 const securityQuestionAnswer1 = forgotPasswordStore.step3b.securityQuestionAnswer1;
                 const securityQuestionAnswer2 = forgotPasswordStore.step3b.securityQuestionAnswer2;
                 const securityQuestionAnswer3 = forgotPasswordStore.step3b.securityQuestionAnswer3;
-                await forgotPasswordStore.answerChallenge(phone, securityQuestionAnswer1, securityQuestionAnswer2, securityQuestionAnswer3);
+                await forgotPasswordService.answerChallenge(phone, securityQuestionAnswer1, securityQuestionAnswer2, securityQuestionAnswer3);
             }
         }
 

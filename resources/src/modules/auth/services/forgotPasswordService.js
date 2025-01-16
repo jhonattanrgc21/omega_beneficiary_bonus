@@ -4,6 +4,8 @@ import { formatDate } from "@utils/formatHelper.js";
 
 const VALIDATE_AFILIATE_URL = "auth/forgot-password/validateAffiliate";
 const ANSWER_CHALLENGE_URL = "auth/forgot-password/answerChallenge";
+const SEND_OTP_URL = "auth/forgot-password/sendOTP";
+const CHECK_OTP_URL = "auth/forgot-password/checkOTP";
 
 // Acceder al store de Pinia
 const forgotPasswordStore = useForgotPasswordStore();
@@ -57,6 +59,33 @@ export const forgotPasswordService = {
             throw new Error(
                 response.data.message ||
                     "Los datos suministrados son incorrectos"
+            );
+        }
+    },
+
+    sendOtp: async () => {
+        const response = await http.post(SEND_OTP_URL, {
+            IdAfiliado: forgotPasswordStore.step1.response.afiId,
+            Correo: forgotPasswordStore.step1.response.usaCorreo,
+            Celular: forgotPasswordStore.step1.response.usaCelular,
+        });
+        if (response.data.code !== 200) {
+            throw new Error(
+                response.data.message ||
+                    "Los datos suministrados son incorrectos"
+            );
+        }
+    },
+
+    checkOTP: async (otpCode) => {
+        const response = await http.post(CHECK_OTP_URL, {
+            IdAfiliado: forgotPasswordStore.step1.response.afiId,
+            Correo: forgotPasswordStore.step1.response.usaCorreo,
+            TokenCorreo: otpCode,
+        });
+        if (response.data.code !== 200) {
+            throw new Error(
+                response.data.message || "El código suministrado es incorrecto"
             );
         }
     },
