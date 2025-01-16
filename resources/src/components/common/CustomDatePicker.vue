@@ -1,17 +1,17 @@
 <template>
     <div class="relative">
         <!-- Renderiza el label solo si existe -->
-        <label v-if="label" :for="id" class="block text-sm font-medium text-translucentBlack mb-2">{{ label }}</label>
+        <label v-if="label" :for="id" class="block mb-2 text-sm font-medium text-translucentBlack">{{ label }}</label>
 
         <!-- Contenedor para el input y el icono del calendario -->
         <div class="relative">
             <input v-bind="$attrs" v-model="internalValue" type="text" :id="id" :name="id"
-                class="w-full text-sm text-softBlack font-poppins-regular px-4 py-3 pr-10 border border-transparentBlack rounded-md focus:outline-none focus:ring-2 focus:ring-orangeLight"
+                class="w-full px-4 py-3 pr-10 text-sm border rounded-md text-softBlack font-poppins-regular border-transparentBlack focus:outline-none focus:ring-2 focus:ring-orangeLight"
                 ref="datepicker" @input="onInput" />
 
             <!-- Ícono de calendario -->
-            <span class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                <img src="@icons/calendar_today.svg" alt="icono_calendar">
+            <span class="absolute inset-y-0 right-0 flex items-center pr-3">
+                <img :src="calendarIcon" alt="icono_calendar">
             </span>
         </div>
 
@@ -23,8 +23,9 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
 import flatpickr from 'flatpickr';
+import calendarIcon from '@icons/calendar_today.svg';
 import 'flatpickr/dist/flatpickr.min.css'; // Estilos de Flatpickr
-import { Spanish } from 'flatpickr/dist/l10n/es.js'; // Importar idioma español
+import { Spanish } from 'flatpickr/dist/l10n/es.js'; // idioma español de Flatpickr
 
 // Definir los props
 const props = defineProps({

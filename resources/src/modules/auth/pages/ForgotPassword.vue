@@ -51,7 +51,7 @@
             <WarningPopup :title="popupTitle" :message="popupMessage" :buttonText="'Aceptar'" :isVisible="showPopup"
                 @close="closePopup">
                 <template #icon>
-                    <img :src="isErrorPopup ? errorIcon : successIcon" alt="icon" class="w-12 h-12 mb-4">
+                    <img :src="isErrorPopup ? errorIcon : successIcon" alt="icon" class="w-24 h-24 mb-4">
                 </template>
             </WarningPopup>
         </div>
@@ -96,7 +96,7 @@ const stepComponents = [
 const showPopup = ref(false);
 const popupTitle = ref("");
 const popupMessage = ref("");
-const isErrorPopup = ref(true);
+const isErrorPopup = ref(false);
 
 
 // Método para abrir el pop-up con título y mensaje dinámicos

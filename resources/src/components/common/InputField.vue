@@ -1,19 +1,18 @@
 <template>
     <div class="relative">
         <!-- Renderiza el label solo si existe -->
-        <label v-if="label" :for="id" class="block text-sm font-medium text-translucentBlack mb-2">{{ label }}</label>
+        <label v-if="label" :for="id" class="block mb-2 text-sm font-medium text-translucentBlack">{{ label }}</label>
 
         <!-- Contenedor para el input y el icono -->
         <div class="relative">
             <input v-bind="$attrs" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)"
                 :type="computedType" :id="id" :name="id"
-                class="w-full text-sm text-softBlack font-poppins-regular px-4 py-3 pr-10 border border-transparentBlack rounded-md focus:outline-none focus:ring-2 focus:ring-orangeLight" />
+                class="w-full px-4 py-3 pr-10 text-sm border rounded-md text-softBlack font-poppins-regular border-transparentBlack focus:outline-none focus:ring-2 focus:ring-orangeLight" />
 
             <!-- Ícono de ojo para mostrar/ocultar contraseña -->
             <button v-if="type === 'password'" @click="togglePasswordVisibility" type="button"
-                class="absolute inset-y-0 right-0 pr-3 flex items-center ">
-                <img v-if="isPasswordVisible" src="@icons/icono_visibilidad_24x24.svg" alt="icono_visibilidad">
-                <img v-else src="@icons/visibility_off.svg" alt="icono_visibility_off">
+                class="absolute inset-y-0 right-0 flex items-center pr-3 ">
+                <img :src="isPasswordVisible? visibilityOnIcon : visibilityOffIcon" alt="icono_visibilidad">
             </button>
         </div>
 
@@ -24,6 +23,8 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import visibilityOnIcon from '@icons/icono_visibilidad_24x24.svg'
+import visibilityOffIcon from '@icons/visibility_off.svg'
 
 // Parámetros del componente
 const props = defineProps({
