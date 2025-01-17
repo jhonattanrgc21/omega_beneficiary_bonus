@@ -28,7 +28,7 @@ export const registerService = {
             );
         }
 
-        registerStore.setStep1Response(response.data);
+        registerStore.setStep1Response(response.data.data[0]);
     },
 
     sendOtp: async () => {

@@ -23,7 +23,7 @@
             </div>
 
             <!-- Step Content -->
-            <div class="flex-grow mt-8">
+            <div class="flex-grow my-8">
                 <!-- Aquí se cargarán los componentes dinámicamente -->
                 <component :is="currentStepComponent" />
             </div>
@@ -96,6 +96,7 @@ const stepComponents = [
 const showPopup = ref(false);
 const popupTitle = ref("");
 const popupMessage = ref("");
+const isErrorPopup = ref(false);
 
 
 // Método para abrir el pop-up con título y mensaje dinámicos
@@ -183,6 +184,7 @@ const prevStep = () => {
                 method == 1 ? forgotPasswordStore.clearStep3a() : forgotPasswordStore.clearStep3b();
                 break;
             case 2:
+                if (forgotPasswordStore.step2.method == 1) forgotPasswordStore.clearStep3a();
                 forgotPasswordStore.clearStep4();
                 break;
 

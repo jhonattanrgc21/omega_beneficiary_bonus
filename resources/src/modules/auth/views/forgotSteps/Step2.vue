@@ -7,7 +7,7 @@
                 class="w-5 h-5 border-2 border-gray-300 rounded-full appearance-none focus:ring-1 focus:ring-orangeBright checked:bg-orangeBright" />
             <div>
                 <h3 class="text-base text-softBlack font-poppins-medium">Enviar código por correo electrónico:</h3>
-                <p class="text-sm text-gray-500 text-translucentBlack font-poppins-regular">example@gmail.com</p>
+                <p class="text-sm text-translucentBlack font-poppins-regular">{{ email }}</p>
             </div>
         </div>
 
@@ -28,6 +28,7 @@ import { useForgotPasswordStore } from '../../stores/useForgotPasswordStore';
 
 // Acceder al store de Pinia
 const forgotPasswordStore = useForgotPasswordStore();
+const email = ref(forgotPasswordStore.step1.response.usaCorreo);
 
 // Inicializar el selectedItem con el valor del método en el store
 const selectedItem = ref(forgotPasswordStore.step2.method);

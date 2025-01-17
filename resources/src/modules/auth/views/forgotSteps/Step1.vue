@@ -11,12 +11,10 @@
                 v-model="form.date" :error="errors.date" />
         </div>
 
-        <div class="mb-8">
-            <InputField @focus="setTouched('cardNumber')" @input="validateCardNumber" @blur="validateCardNumber"
-                label="Últimos 6 dígitos de la tarjeta" id="cardNumber" type="text"
-                placeholder="Ingrese los últimos 6 dígitos de su tarjeta" v-model="form.cardNumber"
-                :error="errors.cardNumber" />
-        </div>
+        <InputField @focus="setTouched('cardNumber')" @input="validateCardNumber" @blur="validateCardNumber"
+            label="Últimos 6 dígitos de la tarjeta" id="cardNumber" type="text"
+            placeholder="Ingrese los últimos 6 dígitos de su tarjeta" v-model="form.cardNumber"
+            :error="errors.cardNumber" />
     </form>
 </template>
 

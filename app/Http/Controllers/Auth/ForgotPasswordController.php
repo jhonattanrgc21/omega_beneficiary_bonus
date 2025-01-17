@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ForgotPassword\AnswerChallengeRequest;
 use App\Http\Requests\ForgotPassword\ChangePasswordRequest;
-use App\Http\Requests\ForgotPassword\CheckOTPRequest;
-use App\Http\Requests\ForgotPassword\SendOTPRequest;
 use App\Http\Requests\ForgotPassword\ValidateAffiliateRequest;
 use App\Services\HttpService;
 

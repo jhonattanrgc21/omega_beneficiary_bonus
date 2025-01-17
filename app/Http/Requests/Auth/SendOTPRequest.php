@@ -15,7 +15,7 @@ class SendOTPRequest extends FormRequest
     {
         return [
             'IdAfiliado' => 'required|string',
-            'Correo' => 'required|string|mail|max:80',
+            'Correo' => 'required|string|email|max:80',
             "Celular" => 'required|string|size:11',
         ];
     }

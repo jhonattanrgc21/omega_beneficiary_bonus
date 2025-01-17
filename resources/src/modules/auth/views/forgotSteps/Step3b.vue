@@ -38,12 +38,10 @@
                 :error="errors.securityQuestionAnswer2" />
         </div>
 
-        <div class="mb-8">
-            <InputField @focus="setTouched('securityQuestionAnswer3')" @input="validateSecurityQuestionAnswer3"
-                @blur="validateSecurityQuestionAnswer3" label="Respuesta 3" id="securityQuestionAnswer3"
-                placeholder="Ingrese su respuesta" v-model="form.securityQuestionAnswer3"
-                :error="errors.securityQuestionAnswer3" />
-        </div>
+        <InputField @focus="setTouched('securityQuestionAnswer3')" @input="validateSecurityQuestionAnswer3"
+            @blur="validateSecurityQuestionAnswer3" label="Respuesta 3" id="securityQuestionAnswer3"
+            placeholder="Ingrese su respuesta" v-model="form.securityQuestionAnswer3"
+            :error="errors.securityQuestionAnswer3" />
     </form>
 </template>
 

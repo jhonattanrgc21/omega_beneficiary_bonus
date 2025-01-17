@@ -6,6 +6,7 @@ import {
     ANSWER_CHALLENGE_URL,
     SEND_OTP_URL,
     CHECK_OTP_URL,
+    CHANGE_PASSWORD_URL
 } from "@constants/url.js";
 
 // Acceder al store de Pinia
@@ -27,7 +28,7 @@ export const forgotPasswordService = {
             );
         }
 
-        forgotPasswordStore.setStep1Response(response.data);
+        forgotPasswordStore.setStep1Response(response.data.data[0]);
     },
 
     sendOtp: async () => {
@@ -62,8 +63,8 @@ export const forgotPasswordService = {
             forgotPasswordStore.step3b.phoneCode +
             forgotPasswordStore.step3b.phoneNumber;
         const response = await http.post(ANSWER_CHALLENGE_URL, {
-            IdUsuario: forgotPasswordStore.step1.response.userId,
-            IdEmisor: forgotPasswordStore.step1.response.emisorId,
+            IdUsuario: forgotPasswordStore.step1.response.usaId,
+            IdEmisor: forgotPasswordStore.step1.response.emiId,
             Celular: phone,
             Respuesta1: forgotPasswordStore.step3b.securityQuestionAnswer1,
             Respuesta2: forgotPasswordStore.step3b.securityQuestionAnswer2,
@@ -79,9 +80,9 @@ export const forgotPasswordService = {
     },
 
     changePassword: async () => {
-        const response = await http.post(ANSWER_CHALLENGE_URL, {
-            IdUsuario: forgotPasswordStore.step1.response.userId,
-            IdEmisor: forgotPasswordStore.step1.response.emisorId,
+        const response = await http.post(CHANGE_PASSWORD_URL, {
+            IdUsuario: forgotPasswordStore.step1.response.usaId,
+            IdEmisor: forgotPasswordStore.step1.response.emiId,
             ContrasenaNuevaTMP: forgotPasswordStore.step4.newPassword,
             ConfirmarcontrasenaTMP: forgotPasswordStore.step4.confirmPassword,
         });

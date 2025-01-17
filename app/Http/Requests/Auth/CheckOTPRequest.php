@@ -15,7 +15,7 @@ class CheckOTPRequest extends FormRequest
     {
         return [
             'IdAfiliado' => 'required|string',
-            'Correo' => 'required|string|mail|max:80',
+            'Correo' => 'required|string|email|max:80',
             'TokenCorreo' => 'required|string|size:6',
         ];
     }

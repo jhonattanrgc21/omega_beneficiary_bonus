@@ -1,11 +1,14 @@
 <template>
     <h2 class="mb-4 text-lg font-semibold">Paso 4: Cambio de contraseña</h2>
+
+    <PasswordRulesCard />
+    
     <form class="flex flex-col justify-between h-full">
         <InputField @focus="setTouched('newPassword')" @input="validateNewPassword" @blur="validateNewPassword"
             label="Nueva contraseña" id="newPassword" type="password" placeholder="Ingrese su contraseña"
             v-model="form.newPassword" :error="errors.newPassword" />
 
-        <div class="mt-4 mb-4">
+        <div class="mt-4">
             <InputField @focus="setTouched('confirmPassword')" @input="validateConfirmPassword"
                 @blur="validateConfirmPassword" label="Confirmación de la contraseña" id="confirmPassword"
                 type="password" placeholder="Ingrese la confirmación su contraseña" v-model="form.confirmPassword"
@@ -18,6 +21,7 @@
 import { computed, watch } from "vue";
 import { useForm } from "@utils/formHelper";
 import InputField from "@components/InputField.vue";
+import PasswordRulesCard from "@components/PasswordRulesCard.vue";
 import { validateNewPassword as validatePassword, validateConfirmNewPassword as validateConfirmNewP } from "@utils/validators";
 import { useForgotPasswordStore } from '../../stores/useForgotPasswordStore';
 
@@ -45,7 +49,7 @@ const validateConfirmPassword = () => {
         errors.confirmPassword = null;
         return;
     }
-    forgotPasswordStore.setStep4ConfirmPassword(form.datconfirmPassworde);
+    forgotPasswordStore.setStep4ConfirmPassword(form.confirmPassword);
     errors.confirmPassword = validateConfirmNewP(form.confirmPassword, form.newPassword);
 };
 
