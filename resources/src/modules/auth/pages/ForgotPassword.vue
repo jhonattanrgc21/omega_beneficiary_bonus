@@ -48,12 +48,22 @@
                 </router-link>
             </div>
 
-            <WarningPopup :title="popupTitle" :message="popupMessage" :buttonText="'Aceptar'" :isVisible="showPopup"
+            <!-- Popup de alerta -->
+            <WarningPopup v-if="showPopup" :title="popupTitle" :message="popupMessage" :buttonText="'Aceptar'"
                 @close="closePopup">
                 <template #icon>
                     <img :src="isErrorPopup ? errorIcon : successIcon" alt="icon" class="w-24 h-24 mb-4">
                 </template>
             </WarningPopup>
+
+            <!-- Popup de confirmación -->
+            <ConfirmationPopup v-if="showConfirmationPopup" title="Cambiar contraseña"
+                message="¿Estás seguro(a) de que deseas realizar esta operaciòn?"
+                @confirm="handleConfirmationPopup('confirm')" @cancel="handleConfirmationPopup('cancel')">
+                <template #icon>
+                    <img :src="warningIcon" alt="icon" class="w-24 h-24 mb-4">
+                </template>
+            </ConfirmationPopup>
         </div>
     </div>
 </template>
@@ -64,10 +74,12 @@ import { onBeforeRouteLeave } from 'vue-router';
 import router from "@routes/index.js";
 import CustomButton from "@components/CustomButton.vue";
 import WarningPopup from "@components/WarningPopup.vue";
+import ConfirmationPopup from "@components/ConfirmationPopup.vue";
 import { useForgotPasswordStore } from '../stores/useForgotPasswordStore';
 import { forgotPasswordService } from '../services/forgotPasswordService.js';
 import errorIcon from '@icons/error.svg';
 import successIcon from '@icons/icono_check_circulo_48x48.svg';
+import warningIcon from '@icons/warning.svg';
 import Step1 from "../views/forgotSteps/Step1.vue";
 import Step2 from "../views/forgotSteps/Step2.vue";
 import Step3a from "../views/forgotSteps/Step3a.vue";
@@ -94,6 +106,7 @@ const stepComponents = [
 
 // Control de visibilidad del pop-up
 const showPopup = ref(false);
+const showConfirmationPopup = ref(false);
 const popupTitle = ref("");
 const popupMessage = ref("");
 const isErrorPopup = ref(false);
@@ -116,6 +129,20 @@ const closePopup = () => {
     showPopup.value = false;
     isErrorPopup.value = false;
 };
+
+const handleConfirmationPopup = async (action) => {
+    showConfirmationPopup.value = false;
+
+    if (action === "confirm") {
+        try {
+            await forgotPasswordService.changePassword();
+            openPopup("¡Éxito!", 'Su contraseña ha sido restablecida con éxito. Ahora puedes iniciar sesión.');
+        } catch (error) {
+            isErrorPopup.value = true;
+            openPopup("¡Error!", error.message);
+        }
+    }
+}
 
 // Metodo para obtener el componente del paso actual
 const currentStepComponent = computed(() => {
@@ -161,9 +188,8 @@ const nextStep = async () => {
         if (currentStep.value < stepComponents.length - 1) currentStep.value++;
         else {
             // Realizar la solicitud final al backend
-            await forgotPasswordService.changePassword();
             isErrorPopup.value = false;
-            openPopup("¡Éxito!", 'Su contraseña ha sido restablecida con éxito. Ahora puedes iniciar sesión.');
+            showConfirmationPopup.value = true;
         }
     } catch (error) {
         isErrorPopup.value = true;

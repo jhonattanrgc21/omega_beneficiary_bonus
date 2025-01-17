@@ -17,7 +17,7 @@
         </div>
     </form>
 
-    <WarningPopup :title="'¡Error!'" :message="popupMessage" :buttonText="'Aceptar'" :isVisible="showPopup"
+    <WarningPopup v-if="showPopup" :title="'¡Error!'" :message="popupMessage" :buttonText="'Aceptar'"
         @close="closePopup">
         <template #icon>
             <img :src="errorIcon" alt="icon" class="w-24 h-24 mb-4">

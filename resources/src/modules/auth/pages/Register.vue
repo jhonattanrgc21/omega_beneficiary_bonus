@@ -45,7 +45,7 @@
                 </router-link>
             </div>
 
-            <WarningPopup :title="popupTitle" :message="popupMessage" :buttonText="'Aceptar'" :isVisible="showPopup"
+            <WarningPopup v-if="showPopup" :title="popupTitle" :message="popupMessage" :buttonText="'Aceptar'"
                 @close="closePopup">
                 <template #icon>
                     <img :src="isErrorPopup ? errorIcon : successIcon" alt="icon" class="w-24 h-24 mb-4">
