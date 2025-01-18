@@ -7,7 +7,7 @@
         <div class="relative">
             <input v-bind="$attrs" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)"
                 :type="computedType" :id="id" :name="id"
-                class="w-full px-4 py-3 pr-10 text-sm border rounded-md text-softBlack font-poppins-regular border-transparentBlack focus:outline-none focus:ring-2 focus:ring-orangeLight" />
+                class="w-full h-12 px-4 py-3 pr-10 text-sm border rounded-md text-softBlack font-poppins-regular border-transparentBlack focus:outline-none focus:ring-2 focus:ring-orangeLight" />
 
             <!-- Ícono de ojo para mostrar/ocultar contraseña -->
             <button v-if="type === 'password'" @click="togglePasswordVisibility" type="button"

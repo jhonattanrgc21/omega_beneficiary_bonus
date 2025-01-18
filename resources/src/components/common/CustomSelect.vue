@@ -1,7 +1,7 @@
 <template>
     <div class="relative">
         <!-- Renderiza el label solo si existe -->
-        <label v-if="label" :for="id" class="block text-sm font-medium text-translucentBlack mb-2">
+        <label v-if="label" :for="id" class="block mb-2 text-sm font-medium text-translucentBlack">
             {{ label }}
         </label>
 
@@ -9,7 +9,7 @@
         <div class="relative">
             <select v-bind="$attrs" :value="modelValue" @change="$emit('update:modelValue', $event.target.value)"
                 :id="id" :name="id"
-                class="w-full text-sm text-softBlack font-poppins-regular px-4 py-3 border border-transparentBlack rounded-md focus:outline-none focus:ring-2 focus:ring-orangeLight">
+                class="w-full h-12 px-4 py-3 text-sm border rounded-md text-softBlack font-poppins-regular border-transparentBlack focus:outline-none focus:ring-2 focus:ring-orangeLight">
                 <!-- Renderiza las opciones desde el slot -->
                 <slot />
             </select>

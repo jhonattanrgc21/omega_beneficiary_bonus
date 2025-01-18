@@ -6,7 +6,7 @@
         <!-- Contenedor para el input y el icono del calendario -->
         <div class="relative">
             <input v-bind="$attrs" v-model="internalValue" type="text" :id="id" :name="id"
-                class="w-full px-4 py-3 pr-10 text-sm border rounded-md text-softBlack font-poppins-regular border-transparentBlack focus:outline-none focus:ring-2 focus:ring-orangeLight"
+                class="w-full h-12 px-4 py-3 pr-10 text-sm border rounded-md text-softBlack font-poppins-regular border-transparentBlack focus:outline-none focus:ring-2 focus:ring-orangeLight"
                 ref="datepicker" @input="onInput" />
 
             <!-- Ícono de calendario -->
