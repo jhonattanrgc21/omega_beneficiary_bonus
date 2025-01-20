@@ -10,7 +10,7 @@
             <label for="phoneCode" class="block mb-2 text-sm font-medium text-translucentBlack">Teléfono</label>
             <div class="flex items-center">
                 <!-- Select para el código de teléfono con flex-grow-0 para no crecer -->
-                <CustomSelect @focus="setTouched('phoneCode')" @input="validatePhoneCode" @blur="validatePhoneCode"
+                <CustomSelect @focus="setTouched('phoneCode')" @change="validatePhoneCode" @blur="validatePhoneCode"
                     id="phoneCode" v-model="form.phoneCode" class="flex-grow-0">
                     <option value="0412">0412</option>
                     <option value="0414">0414</option>

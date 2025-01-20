@@ -410,3 +410,32 @@ export const validateEmail = (
     // Si pasa todas las validaciones, no hay errores
     return null;
 };
+
+export const validateQuestion = (
+    question,
+    extra1 = "",
+    extra2 = "",
+    rules = { required: true, unique: true }
+) => {
+    const trimmedQuestion = question.trim();
+    const errorsMessages = {
+        empty: "El campo es obligatorio.",
+        duplicate: "Las preguntas no pueden estar repetidas.",
+    };
+
+    // Validar si el campo es obligatorio
+    if (rules.required && trimmedQuestion.length === 0) {
+        return errorsMessages.empty;
+    }
+
+    // Validar que no sea igual a extra1 o extra2 (validar duplicado)
+    if (
+        rules.unique &&
+        (trimmedQuestion === extra1.trim() || trimmedQuestion === extra2.trim())
+    ) {
+        return errorsMessages.duplicate;
+    }
+
+    // Si pasa todas las validaciones, no hay errores
+    return null;
+};

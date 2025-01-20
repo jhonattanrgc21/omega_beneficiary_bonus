@@ -10,7 +10,7 @@
             <select v-bind="$attrs" :value="modelValue" @change="$emit('update:modelValue', $event.target.value)"
                 :id="id" :name="id"
                 class="w-full h-12 px-4 py-3 text-sm border rounded-md text-softBlack font-poppins-regular border-transparentBlack focus:outline-none focus:ring-2 focus:ring-orangeLight">
-                <!-- Renderiza las opciones desde el slot -->
+                <option v-if="placeholder" value="" disabled selected>{{ placeholder }}</option>
                 <slot />
             </select>
         </div>
@@ -38,6 +38,10 @@ const props = defineProps({
     },
     modelValue: {
         type: [String, Number],
+        default: "",
+    },
+    placeholder: {
+        type: String,
         default: "",
     },
 });
