@@ -20,3 +20,7 @@ export const INVALID_SPECIAL_CHAR_REGEX = /[^a-zA-Z0-9.!#$%&()*+-]/;
 
 // Expresión regular para verificar el formato del correo
 export const EMAIL_REGEX = /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+// Expresión regular para validar que el valor contenga al menos una letra
+
+export const REGEX_CONTAINS_LETTER = /[a-zA-Z]/;

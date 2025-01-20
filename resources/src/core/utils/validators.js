@@ -10,6 +10,7 @@ import {
     SPECIAL_CHAR_REGEX,
     INVALID_SPECIAL_CHAR_REGEX,
     EMAIL_REGEX,
+    REGEX_CONTAINS_LETTER,
 } from "@constants/regex";
 
 export const validateUsername = (
@@ -434,6 +435,59 @@ export const validateQuestion = (
         (trimmedQuestion === extra1.trim() || trimmedQuestion === extra2.trim())
     ) {
         return errorsMessages.duplicate;
+    }
+
+    // Si pasa todas las validaciones, no hay errores
+    return null;
+};
+
+export const validateSimpleStringInput = (
+    value,
+    rules = {
+        required: true,
+        minLength: true,
+        format: true,
+        startsWithNumber: true,
+        containsLetter: true 
+    }
+) => {
+    // Definir errores de entrada
+    const errorsMessages = {
+        empty: "El campo es obligatorio.",
+        tooShort: "El campo debe tener al menos 3 caracteres.",
+        format: "Error, solo se permiten letras, números, guiones bajos y puntos.",
+        startsWithNumber: "El valor no puede iniciar con un número.",
+        noLetter: "El valor debe contener al menos una letra.",
+    };
+
+    const trimmedValue = value.trim();
+
+    // Validar si el campo está vacío
+    if (rules.required && trimmedValue.length === 0) {
+        return errorsMessages.empty;
+    }
+
+    // Validar si comienza con un número
+    if (
+        rules.startsWithNumber &&
+        REGEX_USERNAME_STARTS_WITH_NUMBER.test(trimmedValue)
+    ) {
+        return errorsMessages.startsWithNumber;
+    }
+
+    // Validar formato (solo letras, números, guiones bajos y puntos)
+    if (rules.format && !REGEX_USERNAME_FORMAT.test(trimmedValue)) {
+        return errorsMessages.format;
+    }
+
+    // Validar longitud mínima
+    if (rules.minLength && trimmedValue.length < 3) {
+        return errorsMessages.tooShort;
+    }
+
+    // Validar que contenga al menos una letra
+    if (rules.containsLetter && !REGEX_CONTAINS_LETTER.test(trimmedValue)) {
+        return errorsMessages.noLetter;
     }
 
     // Si pasa todas las validaciones, no hay errores
