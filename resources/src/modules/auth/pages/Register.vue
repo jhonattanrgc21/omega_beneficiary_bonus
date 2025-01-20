@@ -190,9 +190,8 @@ const prevStep = () => {
                 registerStore.clearStep2();
                 break;
             case 1:
-                registerStore.clearStep3();
-                break;
             case 2:
+                registerStore.clearStep3();
                 registerStore.clearStep4();
                 break;
             case 3:

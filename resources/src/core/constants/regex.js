@@ -17,3 +17,6 @@ export const UPPERCASE_REGEX = /[A-Z]/;
 export const DIGIT_REGEX = /\d/;
 export const SPECIAL_CHAR_REGEX = /[.!#$%&()*+-]/;
 export const INVALID_SPECIAL_CHAR_REGEX = /[^a-zA-Z0-9.!#$%&()*+-]/;
+
+// Expresión regular para verificar el formato del correo
+export const EMAIL_REGEX = /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/;

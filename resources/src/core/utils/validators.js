@@ -9,6 +9,7 @@ import {
     DIGIT_REGEX,
     SPECIAL_CHAR_REGEX,
     INVALID_SPECIAL_CHAR_REGEX,
+    EMAIL_REGEX,
 } from "@constants/regex";
 
 export const validateUsername = (
@@ -370,6 +371,40 @@ export const validateOtpCode = (
     // Validar que tenga exactamente 6 dígitos
     if (rules.length && trimmedOtpCode.length !== rules.length) {
         return errorsMessages.length;
+    }
+
+    // Si pasa todas las validaciones, no hay errores
+    return null;
+};
+
+export const validateEmail = (
+    email,
+    rules = {
+        required: true,
+        maxLength: 80,
+        format: true,
+    }
+) => {
+    const trimmedEmail = email.trim();
+    const errorsMessages = {
+        empty: "El campo es obligatorio.",
+        tooLong: "El correo no debe superar los 80 caracteres.",
+        format: "No tiene formato de correo electrónico válido.",
+    };
+
+    // Validar si el campo es obligatorio
+    if (rules.required && trimmedEmail.length === 0) {
+        return errorsMessages.empty;
+    }
+
+    // Validar formato de correo
+    if (rules.format && !EMAIL_REGEX.test(trimmedEmail)) {
+        return errorsMessages.format;
+    }
+
+    // Validar longitud máxima
+    if (rules.maxLength && trimmedEmail.length > rules.maxLength) {
+        return errorsMessages.tooLong;
     }
 
     // Si pasa todas las validaciones, no hay errores
