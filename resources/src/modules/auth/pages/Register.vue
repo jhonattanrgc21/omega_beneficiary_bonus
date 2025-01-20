@@ -1,6 +1,8 @@
 <template>
     <div class="flex items-center justify-center min-h-screen bg-gray-100">
-        <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
+        <!-- Card con dimensiones mínimas, pero responsiva en pantallas pequeñas -->
+        <div
+            class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md sm:min-w-[400px] md:min-w-[500px] min-h-[500px] flex flex-col">
             <!-- Stepper Title -->
             <h1 class="mb-6 text-xl text-center font-poppins-medium">Registro</h1>
 
@@ -21,36 +23,47 @@
             </div>
 
             <!-- Step Content -->
-            <div class="flex-grow mt-8">
+            <div class="flex-grow my-8">
                 <!-- Aquí se cargarán los componentes dinámicamente -->
                 <component :is="currentStepComponent" />
             </div>
 
-            <!-- Navigation Buttons -->
+            <!-- Navigation Buttons y Link -->
+
             <div :class="currentStep === 0 ? 'flex justify-end w-full mt-auto' : 'flex justify-between w-full mt-auto'">
+                <!-- Botón Anterior -->
                 <CustomButton v-if="currentStep != 0" @click="prevStep" variant="outline" type="button">
                     Anterior
                 </CustomButton>
 
+                <!-- Botón Siguiente -->
                 <CustomButton :disabled="!isStepValid(currentStep)" @click="nextStep" variant="primary" type="button">
                     {{ currentStep === stepComponents.length - 1 ? 'Finalizar' : 'Continuar' }}
                 </CustomButton>
             </div>
 
-
-            <!-- Link to Login -->
-            <div class="mt-4 text-center">
+            <div class="w-full mt-6 text-center">
                 <router-link to="/auth/login" class="text-sm text-[#007FFF] font-poppins-medium hover:text-[#0066CC]">
                     Volver al inicio de sesión
                 </router-link>
             </div>
 
+            <!-- Popup de alerta -->
             <WarningPopup v-if="showPopup" :title="popupTitle" :message="popupMessage" :buttonText="'Aceptar'"
                 @close="closePopup">
                 <template #icon>
                     <img :src="isErrorPopup ? errorIcon : successIcon" alt="icon" class="w-24 h-24 mb-4">
                 </template>
             </WarningPopup>
+
+            <!-- Popup de confirmación -->
+            <ConfirmationPopup v-if="showConfirmationPopup" title="Cambiar contraseña"
+                message="¿Estás seguro(a) de que deseas realizar esta operaciòn?"
+                @confirm="handleConfirmationPopup('confirm')" @cancel="handleConfirmationPopup('cancel')">
+                <template #icon>
+                    <img :src="warningIcon" alt="icon" class="w-24 h-24 mb-4">
+                </template>
+            </ConfirmationPopup>
         </div>
     </div>
 </template>
@@ -63,8 +76,10 @@ import { useRegisterStore } from '../stores/useRegisterStore'
 import { registerService } from '../services/registerService.js';
 import errorIcon from '@icons/error.svg';
 import successIcon from '@icons/icono_check_circulo_48x48.svg';
+import warningIcon from '@icons/warning.svg';
 import CustomButton from "@components/CustomButton.vue";
 import WarningPopup from "@components/WarningPopup.vue";
+import ConfirmationPopup from "@components/ConfirmationPopup.vue";
 import Step1 from '../views/registerSteps/Step1.vue';
 import Step2 from '../views/registerSteps/Step2.vue';
 import Step3 from '../views/registerSteps/Step3.vue';
@@ -95,6 +110,8 @@ const stepComponents = [
 const showPopup = ref(false);
 const popupTitle = ref("");
 const popupMessage = ref("");
+const showConfirmationPopup = ref(false);
+const isErrorPopup = ref(false);
 
 
 // Método para abrir el pop-up con título y mensaje dinámicos
@@ -114,6 +131,20 @@ const closePopup = () => {
     showPopup.value = false;
     isErrorPopup.value = false;
 };
+
+const handleConfirmationPopup = async (action) => {
+    showConfirmationPopup.value = false;
+
+    if (action === "confirm") {
+        try {
+            await registerService.register();
+            openPopup("¡Éxito!", 'Su registro ha sido procesado con éxito.');
+        } catch (error) {
+            isErrorPopup.value = true;
+            openPopup("¡Error!", error.message);
+        }
+    }
+}
 
 
 // Metodo para obtener el componente del paso actual

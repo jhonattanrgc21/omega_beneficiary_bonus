@@ -13,11 +13,11 @@ import {
 const registerStore = useRegisterStore();
 
 export const registerService = {
-    verifyAffiliate: async (identification, card, date) => {
-        date = formatDate(date, "MM-DD-YYYY");
+    verifyAffiliate: async () => {
+        const date = formatDate(registerStore.step1.date, "MM-DD-YYYY");
         const response = await http.post(VERIFY_AFFILIATE_URL, {
-            Cedula: identification,
-            Numero: card,
+            Cedula: registerStore.step1.identification,
+            Numero: registerStore.step1.cardNumber,
             FechaNacimiento: date,
         });
 

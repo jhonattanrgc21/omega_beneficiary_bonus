@@ -14,7 +14,7 @@ export const useRegisterStore = defineStore("register", {
             phoneCode: "0412",
             phoneNumber: "",
             email: "",
-            isValid: true,
+            isValid: false,
         }),
         step3: reactive({
             otpCode: "",
@@ -125,7 +125,7 @@ export const useRegisterStore = defineStore("register", {
             this.step2.phoneCode = "0412";
             this.step2.phoneNumber = "";
             this.step2.email = "";
-            this.step2.isValid = true;
+            this.step2.isValid = false;
         },
         clearStep3() {
             this.step3.otpCode = "";
