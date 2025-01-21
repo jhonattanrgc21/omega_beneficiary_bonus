@@ -9,7 +9,7 @@
         <div class="relative">
             <select v-bind="$attrs" :value="modelValue" @change="$emit('update:modelValue', $event.target.value)"
                 :id="id" :name="id"
-                class="w-full h-12 px-4 py-3 text-sm border rounded-md text-softBlack font-poppins-regular border-transparentBlack focus:outline-none focus:ring-2 focus:ring-orangeLight">
+                class="w-full px-4 py-3 text-sm border rounded-md h-11 text-softBlack font-poppins-regular border-transparentBlack focus:outline-none focus:ring-2 focus:ring-orangeLight">
                 <option v-if="placeholder" value="" disabled selected>{{ placeholder }}</option>
                 <slot />
             </select>
