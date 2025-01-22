@@ -166,15 +166,10 @@ const nextStep = async () => {
         if (currentStep.value == 0) await registerService.verifyAffiliate();
         if (currentStep.value == 2) await registerService.checkOTP();
 
-
         // Si la validación es exitosa, avanza al siguiente paso
         if (currentStep.value < stepComponents.length - 1) currentStep.value++;
-        else {
-            // Realizar la solicitud final al backend
-            await registerService.register();
-            isErrorPopup.value = false;
-            openPopup("¡Éxito!", 'Su registro fue procesada con éxito.');
-        }
+        else showConfirmationPopup.value = true;
+
     } catch (error) {
         isErrorPopup.value = true;
         openPopup("¡Error!", error.message);
