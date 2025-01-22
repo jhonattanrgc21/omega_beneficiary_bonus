@@ -2,7 +2,7 @@
     <h1>Change Password</h1>
 </template>
 
-<script>
+<script setup>
 import { ref, computed } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
 import router from "@routes/index.js";
@@ -14,8 +14,8 @@ import WarningPopup from "@components/WarningPopup.vue";
 import ConfirmationPopup from "@components/ConfirmationPopup.vue";
 import Step1 from '../views/Step1.vue';
 import Step2 from '../views/Step2.vue';
-import { useChangePasswordStore } from '../stores/useChangePasswordStore.js'
-import { changePasswordService } from '../services/changePasswordService.js';
+import { useChangePasswordStore } from '../stores/useChangePasswordStore'
+import { changePasswordSservice } from '../services/changePasswordService';
 
 
 const changePasswordStore = useChangePasswordStore();
@@ -64,7 +64,7 @@ const handleConfirmationPopup = async (action) => {
 
     if (action === "confirm") {
         try {
-            await changePasswordService.changePassword();
+            await changePasswordSservice.changePassword();
             openPopup("¡Éxito!", 'Su cambio de contraseña ha sido procesado con éxito.');
         } catch (error) {
             isErrorPopup.value = true;

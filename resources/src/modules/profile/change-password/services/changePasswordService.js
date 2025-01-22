@@ -1,6 +1,6 @@
 import http from "@http/api.js";
 import { useSessionStore } from "@stores/useSessionStore";
-import { useChangePasswordStore } from "../stores/useChangePasswordStore";
+import { useChangePasswordStore } from '../stores/useChangePasswordStore'
 import {
     CHANGE_PASSWORD_SEND_OTP_URL,
     CHANGE_PASSWORD_CHECK_OTP_URL,

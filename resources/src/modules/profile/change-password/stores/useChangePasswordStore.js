@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { reactive } from "vue";
 
-export const useChangePaswordStore = defineStore("change-password", {
+export const useChangePasswordStore = defineStore("change-password", {
     state: () => ({
         step1: reactive({
             currentPassword: "",
