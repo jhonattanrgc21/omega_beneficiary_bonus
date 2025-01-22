@@ -3,6 +3,8 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Profile\ChangePassword\ChangePasswordController;
+use App\Http\Middleware\VerifyAuthorization;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -18,5 +20,13 @@ Route::prefix('auth')->group(function () {
         Route::post('verifyAffiliate', [RegisterController::class, 'verifyAffiliate']);
         Route::get('getQuestionsList', [RegisterController::class, 'getQuestionsList']);
         Route::post('save', [RegisterController::class, 'register']);
+    });
+});
+
+Route::middleware([VerifyAuthorization::class])->prefix('profile')->group(function () {
+    Route::prefix('change-password')->group(function () {
+        Route::post('sendOTP',  [AuthController::class, 'sendOTP']);
+        Route::post('checkOTP', [AuthController::class, 'checkOTP']);
+        Route::post('change', [ChangePasswordController::class, 'change']);
     });
 });

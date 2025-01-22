@@ -11,6 +11,6 @@ export const VERIFY_AFFILIATE_URL = 'auth/register/verifyAffiliate';
 export const QUESTION_LIST_URL = 'auth/register/getQuestionsList';
 export const REGISTER_URL = 'auth/register/save';
 
-export const CHANGE_PASSWORD_SEND_OTP_URL = 'profile/changePassword/sendOTP';
-export const CHANGE_PASSWORD_CHECK_OTP_URL = 'profile/changePassword/sendOTP';
-export const PROFILE_CHANGE_PASSWORD_URL = 'profile/changePassword/save';
+export const CHANGE_PASSWORD_SEND_OTP_URL = 'profile/change-password/sendOTP';
+export const CHANGE_PASSWORD_CHECK_OTP_URL = 'profile/change-password/sendOTP';
+export const PROFILE_CHANGE_PASSWORD_URL = 'profile/change-password/save';
