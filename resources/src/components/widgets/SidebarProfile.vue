@@ -5,7 +5,7 @@
 
         <!-- Sidebar -->
         <aside :class="[
-            'fixed left-0 h-full w-64 bg-white text-translucentBlack transform transition-transform p-4 font-poppins-regular',
+            'fixed left-0 h-full w-72 bg-white text-translucentBlack transform transition-transform p-4 font-poppins-regular',
             isOpen ? 'translate-x-0 z-50' : '-translate-x-full z-40',
             'md:top-[64px] md:z-50', // Para pantallas mayores (después del header)
             'top-0', // Para pantallas pequeñas, encima del header
@@ -13,12 +13,12 @@
             <!-- Botón para cerrar (visible solo en móviles) -->
             <div class="flex items-center justify-end mb-4 md:hidden">
                 <button @click="closeSidebar" class="text-white focus:outline-none">
-                    <img src="@icons/icono_x_24x24.svg" alt="icon_close" class="w-6 h-6">
+                    <img :src="closeIcon" alt="icon_close" class="w-6 h-6">
                 </button>
             </div>
 
             <div class="flex items-center gap-2">
-                <img src="@icons/icono_sidebar_usuarios_24x24.svg" alt="icon_user" class="w-12 h-12">
+                <img :src="userIcon" alt="icon_user" class="w-12 h-12">
                 <div class="flex flex-col">
                     <span class="text-sm">{{ fullName }}</span>
                     <span class="text-xs">{{ username }}</span>
@@ -28,64 +28,55 @@
             <!-- Contenido del Sidebar -->
             <nav class="text-sm">
                 <p class="my-4 text-xs font-poppins-medium">MENÚ</p>
-                <router-link v-if="isActive('/profile/account')" to="/profile/account"
-                    class="block px-4 py-3 mt-2 text-white rounded-md bg-omegaOrange-400">
-                    <div class="flex items-center">
-                        <span>Cuenta</span>
-                    </div>
-                </router-link>
-                <router-link v-else to="/profile/account"
-                    class="block px-4 py-3 mt-2 rounded-md hover:bg-omegaOrange-50 hover:text-omegaOrange-400">
-                    Cuenta
+
+                <!-- Opciones del menú principal -->
+                <router-link v-for="option in menuOptions" :key="option.path" :to="option.path" :class="[
+                    'flex items-center px-4 py-3 mt-2 rounded-md transition-all duration-200',
+                    isActive(option.path)
+                        ? 'text-white bg-omegaOrange-400'
+                        : 'hover:bg-omegaOrange-50 hover:text-omegaOrange-400',
+                ]">
+                    <img :src="isActive(option.path) ? option.iconSelected : option.iconDefault" :alt="option.label"
+                        class="w-5 h-5 mr-3">
+                    {{ option.label }}
                 </router-link>
 
-                <router-link v-if="isActive('/profile/change-password')" to="/profile/change-password"
-                    class="block px-4 py-3 mt-2 text-white rounded-md bg-omegaOrange-400">
-                    Cambio de contraseña
-                </router-link>
-                <router-link v-else to="/profile/change-password"
-                    class="block px-4 py-3 mt-2 rounded-md hover:bg-omegaOrange-50 hover:text-omegaOrange-400">
-                    Cambio de contraseña
-                </router-link>
-
-                <router-link v-if="isActive('/profile/mobile-payment')" to="/profile/mobile-payment"
-                    class="block px-4 py-3 mt-2 text-white rounded-md bg-omegaOrange-400">
-                    Pago móvil
-                </router-link>
-                <router-link v-else to="/profile/mobile-payment"
-                    class="block px-4 py-3 mt-2 rounded-md hover:bg-omegaOrange-50 hover:text-omegaOrange-400">
-                    Pago móvil
-                </router-link>
-
-                <router-link v-if="isActive('/profile/directory')" to="/profile/directory"
-                    class="block px-4 py-3 mt-2 text-white rounded-md bg-omegaOrange-400">
-                    Directorio
-                </router-link>
-                <router-link v-else to="/profile/directory"
-                    class="block px-4 py-3 mt-2 rounded-md hover:bg-omegaOrange-50 hover:text-omegaOrange-400">
-                    Directorio
-                </router-link>
-
+                <!-- Opciones estáticas -->
                 <router-link @click="contactSupport" to="#"
                     class="flex items-center px-4 py-3 mt-2 rounded-md hover:bg-omegaOrange-50 hover:text-omegaOrange-400">
-                    <!-- <img src="@icons/icono_customer_24x24.svg" alt="icon_customer" class="w-5 h-5 mr-3"> -->
+                    <img :src="supportIcon" alt="icon_support" class="w-5 h-5 mr-3">
                     Atención al cliente
                 </router-link>
                 <router-link @click="logout" to="#"
                     class="flex items-center px-4 py-3 mt-2 rounded-md hover:bg-omegaOrange-50 hover:text-omegaOrange-400">
-                    <!-- <img src="@icons/icono_logout_24x24.svg" alt="icon_logout" class="w-5 h-5 mr-3"> -->
+                    <img :src="logoutIcon" alt="icon_logout" class="w-5 h-5 mr-3">
                     Cerrar sesión
                 </router-link>
-
             </nav>
         </aside>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref } from "vue";
 import { useRoute } from "vue-router";
 import { useSessionStore } from "@stores/useSessionStore";
+
+// Importa los íconos
+import closeIcon from "@icons/icono_x_24x24.svg";
+import userIcon from "@icons/icono_sidebar_usuarios_24x24.svg";
+import supportIcon from "@icons/help.svg";
+import logoutIcon from "@icons/logout.svg";
+
+// Íconos dinámicos para las opciones del menú principal
+import accountDefaultIcon from "@icons/credit_card_orange.svg";
+import accountSelectedIcon from "@icons/credit_card_white.svg";
+import passwordDefaultIcon from "@icons/lock_reset_orange.svg";
+import passwordSelectedIcon from "@icons/lock_reset_white.svg";
+import paymentDefaultIcon from "@icons/phonelink_ring_orange.svg";
+import paymentSelectedIcon from "@icons/phonelink_ring_white.svg";
+import directoryDefaultIcon from "@icons/contact_page_orange.svg";
+import directorySelectedIcon from "@icons/contact_page_white.svg";
 
 const sessionStore = useSessionStore();
 const username = ref(sessionStore.username);
@@ -108,15 +99,41 @@ const closeSidebar = () => {
 const route = useRoute();
 const isActive = (path) => route.path === path;
 
+// Opciones del menú principal con íconos dinámicos
+const menuOptions = [
+    {
+        path: "/profile/account",
+        label: "Cuenta",
+        iconDefault: accountDefaultIcon,
+        iconSelected: accountSelectedIcon,
+    },
+    {
+        path: "/profile/change-password",
+        label: "Cambio de contraseña",
+        iconDefault: passwordDefaultIcon,
+        iconSelected: passwordSelectedIcon,
+    },
+    {
+        path: "/profile/mobile-payment",
+        label: "Pago móvil",
+        iconDefault: paymentDefaultIcon,
+        iconSelected: paymentSelectedIcon,
+    },
+    {
+        path: "/profile/directory",
+        label: "Directorio",
+        iconDefault: directoryDefaultIcon,
+        iconSelected: directorySelectedIcon,
+    },
+];
+
 // Función de cierre de sesión
 const logout = () => {
-    console.log('Cerrando sesión...');
-    // Aquí se podría agregar la lógica de cierre de sesión, como limpiar el estado de autenticación, redirigir al login, etc.
+    console.log("Cerrando sesión...");
 };
 
 // Función de contacto con atención al cliente
 const contactSupport = () => {
-    console.log('Contactando con atención al cliente...');
-    // Aquí se podría redirigir a una página de contacto o abrir un modal con opciones de contacto.
+    console.log("Contactando con atención al cliente...");
 };
 </script>
