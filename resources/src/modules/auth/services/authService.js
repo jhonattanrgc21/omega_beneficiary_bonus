@@ -1,6 +1,6 @@
 import http from "@http/api.js";
 import { useSessionStore } from "@stores/useSessionStore";
-import { LOGIN_URL } from "@constants/url.js";
+import { LOGIN_URL } from "@constants/url";
 
 export const authService = {
     login: async (username, password) => {
@@ -20,6 +20,7 @@ export const authService = {
 
         const session = useSessionStore();
         session.setToken(token);
+        session.setUsername(username);
         session.setUserInfo(userInfo);
     },
 

@@ -20,8 +20,8 @@
             <div class="flex items-center gap-2">
                 <img src="@icons/icono_sidebar_usuarios_24x24.svg" alt="icon_user" class="w-12 h-12">
                 <div class="flex flex-col">
-                    <span class="text-sm">Jhonattan Garcìa</span>
-                    <span class="text-xs">@username</span>
+                    <span class="text-sm">{{ fullName }}</span>
+                    <span class="text-xs">{{ username }}</span>
                 </div>
             </div>
 
@@ -33,7 +33,6 @@
                     <div class="flex items-center">
                         <span>Cuenta</span>
                     </div>
-
                 </router-link>
                 <router-link v-else to="/profile/account"
                     class="block px-4 py-3 mt-2 rounded-md hover:bg-omegaOrange-50 hover:text-omegaOrange-400">
@@ -84,7 +83,13 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import { useRoute } from "vue-router";
+import { useSessionStore } from "@stores/useSessionStore";
+
+const sessionStore = useSessionStore();
+const username = ref(sessionStore.username);
+const fullName = ref(sessionStore.getFullName());
 
 const props = defineProps({
     isOpen: {
