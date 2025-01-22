@@ -20,7 +20,7 @@
             <div class="flex items-center gap-2">
                 <img :src="userIcon" alt="icon_user" class="w-12 h-12">
                 <div class="flex flex-col">
-                    <span class="text-sm">{{ fullName }}</span>
+                    <span class="text-sm font-poppins-semibold">{{ fullName }}</span>
                     <span class="text-xs">{{ username }}</span>
                 </div>
             </div>
