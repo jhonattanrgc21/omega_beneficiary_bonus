@@ -1,5 +1,62 @@
 <template>
-    <h1>Change Password</h1>
+    <!-- Card con dimensiones mínimas, pero responsiva en pantallas pequeñas -->
+    <div
+        class="lg:px-24 bg-white p-6 rounded-lg shadow-lg w-full max-w-md  xs:min-w-[350px] sm:min-w-[412px]  lg:min-w-[700px] min-h-[500px] flex flex-col">
+        <!-- Stepper Title -->
+        <h1 class="mb-6 text-xl text-center font-poppins-medium">Cambio de contraseña</h1>
+
+        <!-- Stepper Navigation -->
+        <div class="relative flex items-center justify-between w-full">
+            <div class="absolute left-0 right-0 h-1 transform -translate-y-1/2 bg-gray-300 top-1/2 font-poppins-medium">
+            </div>
+            <div v-for="(step, index) in stepComponents" :key="index" class="relative z-10 flex items-center">
+                <div class="flex items-center justify-center w-8 h-8 border-2 rounded-full font-poppins-semibold"
+                    :class="{
+                        'bg-blue-500 text-white border-blue-500': currentStep >= index,
+                        'bg-white text-gray-500 border-gray-300': currentStep < index,
+                    }">
+                    {{ index + 1 }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Step Content -->
+        <div class="flex-grow my-8">
+            <!-- Aquí se cargarán los componentes dinámicamente -->
+            <component :is="currentStepComponent" />
+        </div>
+
+        <!-- Navigation Buttons y Link -->
+
+        <div :class="currentStep === 0 ? 'flex justify-end w-full mt-auto' : 'flex justify-between w-full mt-auto'">
+            <!-- Botón Anterior -->
+            <CustomButton v-if="currentStep != 0" @click="prevStep" variant="outline" type="button">
+                Anterior
+            </CustomButton>
+
+            <!-- Botón Siguiente -->
+            <CustomButton :disabled="!isStepValid(currentStep)" @click="nextStep" variant="primary" type="button">
+                {{ currentStep === stepComponents.length - 1 ? 'Finalizar' : 'Continuar' }}
+            </CustomButton>
+        </div>
+
+        <!-- Popup de alerta -->
+        <WarningPopup v-if="showWarningPopup" :title="popupTitle" :message="popupMessage" :buttonText="'Aceptar'"
+            @close="closePopup">
+            <template #icon>
+                <img :src="isErrorPopup ? errorIcon : successIcon" alt="icon" class="w-24 h-24 mb-4">
+            </template>
+        </WarningPopup>
+
+        <!-- Popup de confirmación -->
+        <ConfirmationPopup v-if="showConfirmationPopup" title="Cambiar contraseña"
+            message="¿Estás seguro(a) de que deseas realizar esta operaciòn?"
+            @confirm="handleConfirmationPopup('confirm')" @cancel="handleConfirmationPopup('cancel')">
+            <template #icon>
+                <img :src="warningIcon" alt="icon" class="w-24 h-24 mb-4">
+            </template>
+        </ConfirmationPopup>
+    </div>
 </template>
 
 <script setup>

@@ -22,7 +22,7 @@ export const useChangePasswordStore = defineStore("change-password", {
         setStep1NewPassword(value) {
             this.step1.newPassword = value;
         },
-        setStep1ConfirmPasswordr(value) {
+        setStep1ConfirmPassword(value) {
             this.step1.confirmPassword = value;
         },
         setStep1IsValid(value) {
