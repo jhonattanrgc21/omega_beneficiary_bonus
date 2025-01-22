@@ -7,7 +7,7 @@
         <aside :class="[
             'fixed left-0 h-full w-72 bg-white text-translucentBlack transform transition-transform p-4 font-poppins-regular',
             isOpen ? 'translate-x-0 z-50' : '-translate-x-full z-40',
-            'md:top-[64px] md:z-50', // Para pantallas mayores (después del header)
+            'md:top-20 md:z-50', // Para pantallas mayores (después del header de 80px)
             'top-0', // Para pantallas pequeñas, encima del header
         ]">
             <!-- Botón para cerrar (visible solo en móviles) -->
