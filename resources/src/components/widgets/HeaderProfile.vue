@@ -1,5 +1,5 @@
 <template>
-    <header class="z-50 flex items-center justify-between h-20 px-6 py-4 border-b border-gray-300 text-softBlack">
+    <header class="z-30 flex items-center justify-between h-20 px-6 py-4 border-b border-gray-300 text-softBlack">
         <!-- Boton de menu -->
         <div class="flex items-center space-x-2">
             <button class="focus:outline-none" @click="toggleSidebar">
@@ -12,6 +12,7 @@
             <img src="@images/basic_logo.webp" alt="Logo" class="w-auto h-8" />
         </div>
     </header>
+
 </template>
 
 <script setup>

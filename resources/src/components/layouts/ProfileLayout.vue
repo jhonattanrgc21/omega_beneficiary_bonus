@@ -1,21 +1,20 @@
 <template>
-    <div class="relative">
-        <!-- Header -->
-        <Header @toggle-sidebar="toggleSidebar" />
-
+    <div class="relative flex h-screen">
         <!-- Sidebar -->
         <Sidebar :isOpen="sidebarOpen" @close-sidebar="toggleSidebar" />
 
-        <!-- Contenido principal -->
-        <main class="min-h-screen p-6 transition-all duration-300 bg-gray-100"
-            :class="{ 'ml-72': sidebarOpen && isMediumScreen }">
-            <!-- <div class="p-6 bg-white rounded-lg shadow">
-                <router-view></router-view>
-            </div> -->
-            <div class="flex items-center justify-center">
-                <router-view></router-view>
-            </div>
-        </main>
+        <div class="flex flex-col flex-1">
+            <!-- Header -->
+            <Header @toggle-sidebar="toggleSidebar" />
+
+            <!-- Contenido principal -->
+            <main class="flex-1 p-6 overflow-auto transition-all duration-300 bg-gray-100"
+                :class="{ 'ml-72': sidebarOpen && isMediumScreen }">
+                <div class="flex items-center justify-center">
+                    <router-view></router-view>
+                </div>
+            </main>
+        </div>
     </div>
 </template>
 
@@ -47,5 +46,5 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-/* Estilo adicional si es necesario */
+/* Añade un margen si hay problemas visuales con el header y el sidebar */
 </style>

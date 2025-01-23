@@ -5,11 +5,10 @@
 
         <!-- Sidebar -->
         <aside :class="[
-            'fixed left-0 h-full w-72 bg-white text-translucentBlack transform transition-transform p-4 font-poppins-regular',
-            isOpen ? 'translate-x-0 z-50' : '-translate-x-full z-40',
-            'md:top-20 md:z-50', // Para pantallas mayores (después del header de 80px)
-            'top-0', // Para pantallas pequeñas, encima del header
-        ]">
+            'fixed left-0 top-0 md:top-20 h-full w-72 bg-white text-translucentBlack transform transition-transform p-4 font-poppins-regular',
+            isOpen ? 'translate-x-0 z-50' : '-translate-x-full z-40'
+        ]" style="overflow-y: auto; height: 100vh;">
+
             <!-- Botón para cerrar (visible solo en móviles) -->
             <div class="flex items-center justify-end mb-4 md:hidden">
                 <button @click="closeSidebar" class="text-white focus:outline-none">

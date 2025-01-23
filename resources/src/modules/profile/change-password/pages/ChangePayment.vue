@@ -1,7 +1,7 @@
 <template>
     <!-- Card con dimensiones mínimas, pero responsiva en pantallas pequeñas -->
     <div
-        class="lg:px-24 bg-white p-6 rounded-lg shadow-lg w-full max-w-md  xs:min-w-[350px] sm:min-w-[412px]  lg:min-w-[700px] min-h-[500px] flex flex-col">
+        class="lg:px-24 bg-white p-6 rounded-lg shadow-lg w-full max-w-md  xs:min-w-[350px]   lg:min-w-[700px] min-h-[500px] flex flex-col">
         <!-- Stepper Title -->
         <h1 class="mb-6 text-xl text-center font-poppins-medium">Cambio de contraseña</h1>
 
