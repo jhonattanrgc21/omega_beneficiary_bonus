@@ -1,5 +1,5 @@
 <template>
-    <h2 class="mb-4 text-lg font-semibold">Paso 1: Cambio de contraseña</h2>
+    <h2 class="mb-4 text-lg font-semibold">Paso 1: Ingreso de las credenciales</h2>
 
     <PasswordRulesCard />
 
@@ -17,7 +17,7 @@
         <div class="mt-4">
             <InputField @focus="setTouched('confirmPassword')" @input="validateConfirmPassword"
                 @blur="validateConfirmPassword" label="Confirmación de la contraseña" id="confirmPassword"
-                type="password" placeholder="Ingrese la confirmación su contraseña" v-model="form.confirmPassword"
+                type="password" placeholder="Confirme su contraseña" v-model="form.confirmPassword"
                 :error="errors.confirmPassword" />
         </div>
     </form>

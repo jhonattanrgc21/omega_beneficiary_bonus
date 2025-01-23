@@ -5,7 +5,7 @@
 
         <!-- Sidebar -->
         <aside :class="[
-            'fixed left-0 top-0 md:top-20 h-full w-72 bg-white text-translucentBlack transform transition-transform p-4 font-poppins-regular',
+            'fixed left-0 top-0 md:top-16 h-full w-72 bg-white text-translucentBlack transform transition-transform p-4 font-poppins-regular',
             isOpen ? 'translate-x-0 z-50' : '-translate-x-full z-40'
         ]" style="overflow-y: auto; height: 100vh;">
 

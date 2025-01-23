@@ -11,7 +11,11 @@
             <main class="flex-1 p-6 overflow-auto transition-all duration-300 bg-gray-100"
                 :class="{ 'ml-72': sidebarOpen && isMediumScreen }">
                 <div class="flex items-center justify-center">
-                    <router-view></router-view>
+                    <!-- Card con dimensiones mínimas, pero responsiva en pantallas pequeñas -->
+                    <div
+                        class="lg:px-24 bg-white p-6 rounded-lg shadow-lg w-full max-w-md  xs:min-w-[350px]   lg:min-w-[700px] h-auto flex flex-col">
+                        <router-view></router-view>
+                    </div>
                 </div>
             </main>
         </div>
