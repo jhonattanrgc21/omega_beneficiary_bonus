@@ -111,6 +111,7 @@ const startTimer = () => {
 };
 
 const resendOTP = () => {
+    registerStore.clearStep3();
     sendOTP();
     startTimer();
 };

@@ -2,6 +2,8 @@ import http from "@http/api.js";
 import { useSessionStore } from "@stores/useSessionStore";
 import { LOGIN_URL } from "@constants/url";
 
+const session = useSessionStore();
+
 export const authService = {
     login: async (username, password) => {
         const response = await http.post(LOGIN_URL, {
@@ -18,14 +20,14 @@ export const authService = {
         const token = response.data.token;
         const userInfo = response.data.data[0];
 
-        const session = useSessionStore();
         session.setToken(token);
         session.setUsername(username);
         session.setUserInfo(userInfo);
     },
 
     logout: () => {
-        localStorage.removeItem("auth");
-        useSessionStore.clearAuth();
+        localStorage.removeItem("omega-beneficiary-session");
+        session.clearAuth();
+        session.$dispose();
     },
 };

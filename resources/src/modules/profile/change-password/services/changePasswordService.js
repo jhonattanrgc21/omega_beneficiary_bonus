@@ -1,6 +1,6 @@
 import http from "@http/api.js";
 import { useSessionStore } from "@stores/useSessionStore";
-import { useChangePasswordStore } from '../stores/useChangePasswordStore'
+import { useChangePasswordStore } from "../stores/useChangePasswordStore";
 import {
     CHANGE_PASSWORD_SEND_OTP_URL,
     CHANGE_PASSWORD_CHECK_OTP_URL,
@@ -39,16 +39,21 @@ export const changePasswordSservice = {
     },
 
     change: async () => {
-        const response = await http.post(PROFILE_CHANGE_PASSWORD_URL, {
-            IdUsuario: sessionStore.userInfo.usaId,
-            IdEmisor: sessionStore.userInfo.emiId,
-            ContrasenaActual: changePasswordStore.step1.currentPassword,
-            ContrasenaNuevaTMP: changePasswordStore.step1.newPassword,
-            ConfirmarcontrasenaTMP: changePasswordStore.step1.confirmPassword,
-        });
+        const response = await http.post(
+            PROFILE_CHANGE_PASSWORD_URL,
+            {
+                IdUsuario: sessionStore.userInfo.usaId,
+                IdEmisor: sessionStore.userInfo.emiId,
+                ContrasenaActual: changePasswordStore.step1.currentPassword,
+                ContrasenaNuevaTMP: changePasswordStore.step1.newPassword,
+                ConfirmarcontrasenaTMP:
+                    changePasswordStore.step1.confirmPassword,
+            }
+        );
         if (response.data.code !== 200) {
             throw new Error(
-                response.data.message || "El código suministrado es incorrecto"
+                response.data.message ||
+                    "Ocurrió un error inesperado al tratar de cambiar la contraseña."
             );
         }
     },

@@ -1,4 +1,4 @@
-import apiClient from './apiClient';
+import apiClient from "./apiClient";
 
 const api = {
     /**
@@ -23,7 +23,9 @@ const api = {
      * @returns {Promise}
      */
     post(url, data = {}, config = {}) {
-        return apiClient.post(url, data, config);
+        return apiClient.post(url, data, {
+            ...config,
+        });
     },
 
     /**

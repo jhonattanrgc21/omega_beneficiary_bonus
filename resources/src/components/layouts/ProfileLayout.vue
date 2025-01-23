@@ -13,7 +13,7 @@
                 <div class="flex items-center justify-center">
                     <!-- Card con dimensiones mínimas, pero responsiva en pantallas pequeñas -->
                     <div
-                        class="lg:px-24 bg-white p-6 rounded-lg shadow-lg w-full max-w-md  xs:min-w-[350px]   lg:min-w-[700px] h-auto flex flex-col">
+                        class="lg:px-24 bg-white p-6 rounded-lg shadow-lg w-full max-w-md  xs:min-w-[350px]   min-h-[700px]  lg:min-w-[700px] h-auto flex flex-col">
                         <router-view></router-view>
                     </div>
                 </div>

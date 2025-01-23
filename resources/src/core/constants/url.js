@@ -12,5 +12,5 @@ export const QUESTION_LIST_URL = 'auth/register/getQuestionsList';
 export const REGISTER_URL = 'auth/register/save';
 
 export const CHANGE_PASSWORD_SEND_OTP_URL = 'profile/change-password/sendOTP';
-export const CHANGE_PASSWORD_CHECK_OTP_URL = 'profile/change-password/sendOTP';
-export const PROFILE_CHANGE_PASSWORD_URL = 'profile/change-password/save';
+export const CHANGE_PASSWORD_CHECK_OTP_URL = 'profile/change-password/checkOTP';
+export const PROFILE_CHANGE_PASSWORD_URL = 'profile/change-password/change';

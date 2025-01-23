@@ -53,13 +53,25 @@
                 </router-link>
             </nav>
         </aside>
+
+        <!-- Popup de confirmación -->
+        <ConfirmationPopup v-if="showConfirmationPopup" title="Cerrar sesión"
+            message="¿Estás seguro(a) de que deseas cerrar sesión?" confirmButtonText="Sí, cerrar sesión"
+            @confirm="handleConfirmationPopup('confirm')" @cancel="handleConfirmationPopup('cancel')">
+            <template #icon>
+                <img :src="logoutIcon" alt="icon" class="w-24 h-24 mb-4">
+            </template>
+        </ConfirmationPopup>
     </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
 import { useRoute } from "vue-router";
+import router from "@routes/index.js";
+import ConfirmationPopup from "@components/ConfirmationPopup.vue";
 import { useSessionStore } from "@stores/useSessionStore";
+import { authService } from "../../modules/auth/services/authService";
 
 // Importa los íconos
 import closeIcon from "@icons/icono_x_24x24.svg";
@@ -80,6 +92,7 @@ import directorySelectedIcon from "@icons/contact_page_white.svg";
 const sessionStore = useSessionStore();
 const username = ref(sessionStore.username);
 const fullName = ref(sessionStore.getFullName());
+const showConfirmationPopup = ref(false);
 
 const props = defineProps({
     isOpen: {
@@ -93,6 +106,14 @@ const emit = defineEmits(["close-sidebar"]);
 const closeSidebar = () => {
     emit("close-sidebar");
 };
+
+const handleConfirmationPopup = async (action) => {
+    showConfirmationPopup.value = false;
+    if (action === "confirm") {
+        authService.logout();
+        router.push("/auth/login");
+    }
+}
 
 // Determina si la ruta actual es activa
 const route = useRoute();
@@ -128,7 +149,7 @@ const menuOptions = [
 
 // Función de cierre de sesión
 const logout = () => {
-    console.log("Cerrando sesión...");
+    showConfirmationPopup.value = true;
 };
 
 // Función de contacto con atención al cliente

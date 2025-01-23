@@ -111,6 +111,7 @@ const startTimer = () => {
 };
 
 const resendOTP = () => {
+    forgotPasswordStore.clearStep3a();
     sendOTP();
     startTimer();
 };

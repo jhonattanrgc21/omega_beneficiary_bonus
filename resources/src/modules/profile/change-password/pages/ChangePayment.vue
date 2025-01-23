@@ -115,13 +115,7 @@ const handleConfirmationPopup = async (action) => {
     showConfirmationPopup.value = false;
 
     if (action === "confirm") {
-        try {
-            await changePasswordSservice.changePassword();
-            openPopup("¡Éxito!", 'Su cambio de contraseña ha sido procesado con éxito.');
-        } catch (error) {
-            isErrorPopup.value = true;
-            openPopup("¡Error!", error.message);
-        }
+        currentStep.value++;
     }
 }
 
@@ -141,12 +135,12 @@ const isStepValid = (stepIndex) => {
 const nextStep = async () => {
     try {
         // Verifica el paso actual y realiza la petición correspondiente
-        if (currentStep.value == 1) await changePasswordService.checkOTP();
-
-
-        // Si la validación es exitosa, avanza al siguiente paso
-        if (currentStep.value < stepComponents.length - 1) currentStep.value++;
-        else showConfirmationPopup.value = true;
+        if (currentStep.value == 0) showConfirmationPopup.value = true;
+        if (currentStep.value == 1) {
+            await changePasswordSservice.checkOTP();
+            await changePasswordSservice.change();
+            openPopup("¡Éxito!", 'Su cambio de contraseña ha sido procesado con éxito.');
+        }
     } catch (error) {
         isErrorPopup.value = true;
         openPopup("¡Error!", error.message);
